@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using ChaingeRoutePlanner.Models.VROOM.Output;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Input
 {

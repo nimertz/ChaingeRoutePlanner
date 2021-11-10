@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
 
-namespace ChaingeRoutePlanner.Models.VROOM.Input
+namespace ChaingeRoutePlanner.Models.VROOM.Output
 {
     [JsonConverter(typeof(StringEnumConverter<StepType>))]
     public enum StepType

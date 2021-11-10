@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using ChaingeRoutePlanner.Models.VROOM.Output;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Input
 {
@@ -15,8 +14,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// <summary>
         /// The routing profile to use. Defaults to car.
         /// </summary>
-        [JsonPropertyName("profile")]
-        public string? Profile { get; set; }
+        [JsonPropertyName("profile")] public string? Profile { get; set; } = "cycling-electric";
 
         /// <summary>
         /// A description of this vehicle.
@@ -50,9 +48,10 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
 
         /// <summary>
         /// List of integers describing multidimensional qualities.
+        /// 180 kg, 
         /// </summary>
         [JsonPropertyName("capacity")]
-        public List<int>? Capacity { get; set; }
+        public List<int>? Capacity { get; set; } = new(){180};
 
         /// <summary>
         /// List of ints defining skills.

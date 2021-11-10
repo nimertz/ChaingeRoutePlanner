@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
-using ChaingeRoutePlanner.Models.VROOM.Output;
+using ChaingeRoutePlanner.Models.VROOM.Input;
 
-namespace ChaingeRoutePlanner.Models.VROOM.Input
+namespace ChaingeRoutePlanner.Models.VROOM.Output
 {
     public class Step
     {

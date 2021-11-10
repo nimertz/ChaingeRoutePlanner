@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChaingeRoutePlanner", "ChaingeRoutePlanner\ChaingeRoutePlanner.csproj", "{C40EDFF5-9B58-4127-AD67-6D8094F95481}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChaingeRoutePlannerTests", "ChaingeRoutePlannerTests\ChaingeRoutePlannerTests.csproj", "{ABFFCF00-B689-43B6-A1CC-E24B37BD3D10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{C40EDFF5-9B58-4127-AD67-6D8094F95481}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C40EDFF5-9B58-4127-AD67-6D8094F95481}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C40EDFF5-9B58-4127-AD67-6D8094F95481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABFFCF00-B689-43B6-A1CC-E24B37BD3D10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABFFCF00-B689-43B6-A1CC-E24B37BD3D10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABFFCF00-B689-43B6-A1CC-E24B37BD3D10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABFFCF00-B689-43B6-A1CC-E24B37BD3D10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

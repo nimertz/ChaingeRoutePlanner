@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
 
-namespace ChaingeRoutePlanner.Models.VROOM.Output
+namespace ChaingeRoutePlanner.Models.VROOM.Input
 {
     [JsonConverter(typeof(MatrixIndexConverter))]
     public readonly struct MatrixIndex

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ChaingeRoutePlanner.Models.VROOM.Input;
 using ChaingeRoutePlanner.Models.VROOM.Output;
 
 namespace ChaingeRoutePlanner.Converters

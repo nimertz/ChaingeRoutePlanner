@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ChaingeRoutePlanner.Models.VROOM.Output
+namespace ChaingeRoutePlanner.Models.VROOM.Input
 {
     public class Matrice
     {

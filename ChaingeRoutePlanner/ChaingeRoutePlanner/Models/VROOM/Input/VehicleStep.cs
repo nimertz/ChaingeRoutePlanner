@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
-using ChaingeRoutePlanner.Models.VROOM.Input;
+using ChaingeRoutePlanner.Models.VROOM.Output;
 
-namespace ChaingeRoutePlanner.Models.VROOM.Output
+namespace ChaingeRoutePlanner.Models.VROOM.Input
 {
     public class VehicleStep
     {
