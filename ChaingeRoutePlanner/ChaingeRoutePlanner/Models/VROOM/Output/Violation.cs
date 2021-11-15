@@ -1,7 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Output
 {
+    [Owned]
     public class Violation
     {
         /// <summary>

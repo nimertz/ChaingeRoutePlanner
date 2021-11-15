@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Input
 {
     [JsonConverter(typeof(TimeWindowConverter))]
-    public readonly struct TimeWindow
+    [Owned]
+    public class TimeWindow
     {
-        public DateTimeOffset Start { get; }
-        public DateTimeOffset End { get; }
+        public DateTimeOffset Start { get; set; }
+        public DateTimeOffset End { get; set; }
 
         public TimeWindow(DateTimeOffset start, DateTimeOffset end)
         {

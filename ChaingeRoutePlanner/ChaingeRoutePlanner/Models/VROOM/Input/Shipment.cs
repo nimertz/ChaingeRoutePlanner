@@ -1,11 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using ChaingeRoutePlanner.Models.VROOM.Output;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Input
 {
     public class Shipment
     {
+        /// <summary>
+        /// For EF core purposes only not included in Vroom API
+        /// </summary>
+        [JsonIgnore]
+        [Key]
+        public uint Id { get; set; }
+        
         /// <summary>
         /// A ShipmentStep object describing pickup.
         /// </summary>

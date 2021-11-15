@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Input
 {
     [JsonConverter(typeof(MatrixIndexConverter))]
-    public readonly struct MatrixIndex
+    [Owned]
+    public class MatrixIndex
     {
-        public int Row { get; }
-        public int Column { get; }
+        public int Row { get; set; }
+        public int Column { get; set; }
 
         public MatrixIndex(int row, int column)
         {

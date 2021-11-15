@@ -1,7 +1,9 @@
+using ChaingeRoutePlanner.Models.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,9 +23,16 @@ namespace ChaingeRoutePlanner
         public void ConfigureServices(IServiceCollection services)
         {
             //use appsettings.json to configure the environment constants
-            services.AddSingleton(Configuration.GetSection("EnvironmentConfig").Get<EnvironmentConfig>());
+            var section = Configuration.GetSection("EnvironmentConfig").Get<EnvironmentConfig>();
+            services.AddSingleton(section);
             
             services.AddControllersWithViews();
+            
+            //DI of DbContext
+            services.AddDbContextPool<RoutePlanningContext>(option =>
+            {
+                if (section.ConnectionString != null) option.UseNpgsql(section.ConnectionString);
+            });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });

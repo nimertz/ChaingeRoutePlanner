@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
 
@@ -11,6 +12,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// The break Id.
         /// </summary>
         [JsonPropertyName("id")]
+        [Key]
         public uint Id { get; set; }
 
         /// <summary>

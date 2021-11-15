@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Input
 {
     [JsonConverter(typeof(PriorityConverter))]
-    public readonly struct Priority
+    [Owned]
+    public class Priority
     {
         /// <summary>
         /// Must be within [0, 100]
         /// </summary>
-        public int Value { get; }
+        public int Value { get; set; }
 
         /// <summary>
         /// Creates a priority value. Must be within [0, 100].
