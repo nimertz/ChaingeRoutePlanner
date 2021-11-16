@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Input
@@ -13,11 +14,19 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         [Key]
         public uint Id { get; set; }
         
+        [JsonIgnore]
+        [ForeignKey("Pickup")]
+        public uint PickupId { get; set; }
+        
         /// <summary>
         /// A ShipmentStep object describing pickup.
         /// </summary>
         [JsonPropertyName("pickup")]
         public ShipmentStep Pickup { get; set; }
+        
+        [JsonIgnore]
+        [ForeignKey("Delivery")]
+        public uint DeliveryId { get; set; }
         
         /// <summary>
         /// A ShipmentStep object describing delivery.

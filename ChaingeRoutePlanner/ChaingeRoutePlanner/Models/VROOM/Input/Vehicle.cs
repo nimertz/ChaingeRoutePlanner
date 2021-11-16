@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Input
@@ -10,6 +11,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// Vehicle ID.
         /// </summary>
         [JsonPropertyName("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public uint Id { get; set; }
 
