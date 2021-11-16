@@ -13,7 +13,8 @@ namespace ChaingeRoutePlanner.Models.VROOM.Output
         /// For EF core purposes only not included in Vroom API
         /// </summary>
         [JsonIgnore]
-        public uint Id { get; set; }
+        [Key]
+        public int Id { get; set; }
         
         /// <summary>
         /// Id of the vehicle assigned to this route.

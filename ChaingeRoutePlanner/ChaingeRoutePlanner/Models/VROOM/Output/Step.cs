@@ -65,7 +65,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Output
         /// Only provided if type value is job, pickup, delivery or break.
         /// </summary>
         [JsonPropertyName("id")]
-        public uint? Id { get; set; }
+        public int? Id { get; set; }
         
         /// <summary>
         /// Vehicle load after step completion (with capacity constraints).

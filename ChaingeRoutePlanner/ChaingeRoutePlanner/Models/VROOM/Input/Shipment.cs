@@ -11,12 +11,13 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// For EF core purposes only not included in Vroom API
         /// </summary>
         [JsonIgnore]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public uint Id { get; set; }
+        public int Id { get; set; }
         
         [JsonIgnore]
         [ForeignKey("Pickup")]
-        public uint PickupId { get; set; }
+        public int PickupId { get; set; }
         
         /// <summary>
         /// A ShipmentStep object describing pickup.
@@ -26,7 +27,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         
         [JsonIgnore]
         [ForeignKey("Delivery")]
-        public uint DeliveryId { get; set; }
+        public int DeliveryId { get; set; }
         
         /// <summary>
         /// A ShipmentStep object describing delivery.

@@ -1,24 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ChaingeRoutePlanner.Models.VROOM.Input;
 using ChaingeRoutePlanner.Models.VROOM.Output;
 using ChaingeRoutePlanner.VroomClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace ChaingeRoutePlanner.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RouteController : ControllerBase
+    public class VroomController : ControllerBase
     {
-        private readonly ILogger<RouteController> _logger;
+        private readonly ILogger<VroomController> _logger;
         private IVroomApiClient _vroomApiClient;
 
 
-        public RouteController(ILogger<RouteController> logger, EnvironmentConfig config)
+        public VroomController(ILogger<VroomController> logger, EnvironmentConfig config)
         {
             _logger = logger;
             _vroomApiClient = new VroomApiClient(config);
@@ -27,11 +25,11 @@ namespace ChaingeRoutePlanner.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<List<Route>> Post(VroomInput vi)
+        public async Task<VroomOutput> Post(VroomInput vi)
         {
             var response = await _vroomApiClient.PerformRequest(vi);
 
-            return response.Routes;
+            return response;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         [JsonPropertyName("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public uint Id { get; set; }
+        public int Id { get; set; }
         
         /// <summary>
         /// A description of this shipment step.

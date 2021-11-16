@@ -22,8 +22,7 @@ namespace ChaingeRoutePlanner.Models.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
+            /*
             for (uint i = 1; i <= 36; i++)
             {
                 modelBuilder.Entity<Vehicle>().HasData(new Vehicle
@@ -33,6 +32,7 @@ namespace ChaingeRoutePlanner.Models.Contexts
                 });
             }
 
+            
             var sh1Pick = new ShipmentStep
             {
                 Id = 1,
@@ -57,7 +57,7 @@ namespace ChaingeRoutePlanner.Models.Contexts
                 PickupId = sh1Pick.Id,
                 DeliveryId = sh1Del.Id,
                 Amount = new List<int> {5},
-            };
+            };*/
 
             //modelBuilder.Entity<ShipmentStep>().OwnsOne(ss => ss.Location).HasData(sh1Pick,sh1Del);
             /*modelBuilder.Entity<Shipment>()
@@ -68,7 +68,7 @@ namespace ChaingeRoutePlanner.Models.Contexts
                     DeliveryId = sh1Del.Id,
                     Amount = new List<int>{5},
                 });*/
-
+            base.OnModelCreating(modelBuilder);
         }
         
     

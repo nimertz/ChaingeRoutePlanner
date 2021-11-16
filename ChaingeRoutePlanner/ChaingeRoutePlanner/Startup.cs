@@ -1,4 +1,5 @@
 using ChaingeRoutePlanner.Models.Contexts;
+using ChaingeRoutePlanner.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +34,9 @@ namespace ChaingeRoutePlanner
             {
                 if (section.ConnectionString != null) option.UseNpgsql(section.ConnectionString);
             });
+            
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IVehicleRepository, VehicleRepository>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });

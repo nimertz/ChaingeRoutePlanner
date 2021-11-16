@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Models.VROOM.Input;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Output
@@ -6,7 +7,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Output
     public class Unassigned
     {
         [JsonPropertyName("id")]
-        public uint Id { get; set; }
+        public int Id { get; set; }
         
         [JsonPropertyName("type")]
         public string? Type { get; set; }

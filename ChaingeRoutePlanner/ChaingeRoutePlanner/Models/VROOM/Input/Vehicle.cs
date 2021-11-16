@@ -13,7 +13,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         [JsonPropertyName("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// The routing profile to use. Defaults to car.
@@ -29,8 +29,8 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// <summary>
         /// The start coordinate of the vehicle.
         /// </summary>
-        [JsonPropertyName("start")] 
-        public Coordinate? Start { get; set; }
+        [JsonPropertyName("start")]
+        public Coordinate? Start { get; set; } = new Coordinate(55.7067838, 12.5294459);
 
         /// <summary>
         /// The start index of the vehicle in custom matrices. Only needed if supplying custom matrix.
@@ -42,7 +42,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// The end coordinate of the vehicle.
         /// </summary>
         [JsonPropertyName("end")]
-        public Coordinate? End { get; set; }
+        public Coordinate? End { get; set; } = new Coordinate(55.7067838, 12.5294459);
 
         /// <summary>
         /// The end index of the vehicle in custom matrices. Only needed if supplying custom matrix.
@@ -72,6 +72,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// <summary>
         /// A list of break objects.
         /// </summary>
+        /// TODO: Add lunch break
         [JsonPropertyName("breaks")]
         public List<Break>? Breaks { get; set; }
 
