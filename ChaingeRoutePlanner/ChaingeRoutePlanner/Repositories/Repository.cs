@@ -65,5 +65,23 @@ namespace ChaingeRoutePlanner.Repositories
                 throw new Exception($"{nameof(entity)} could not be updated: {ex.Message}");
             }
         }
+        
+        public async Task DeleteAsync(TEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException($"{nameof(AddAsync)} entity must not be null");
+            }
+
+            try
+            {
+                RoutePlanningContext.Remove(entity);
+                await RoutePlanningContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(entity)} could not be deleted: {ex.Message}");
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ChaingeRoutePlanner.Models.Contexts;
 using ChaingeRoutePlanner.Models.VROOM.Input;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChaingeRoutePlanner.Repositories
@@ -19,6 +20,16 @@ namespace ChaingeRoutePlanner.Repositories
         public Task<Vehicle> AddVehicleAsync(Vehicle vehicle)
         {
             return AddAsync(vehicle);
+        }
+
+        public Task<Vehicle> UpdateVehicleAsync(Vehicle vehicle)
+        {
+            return UpdateAsync(vehicle);
+        }
+
+        public Task DeleteVehicleAsync(Vehicle vehicle)
+        {
+            return DeleteAsync(vehicle);
         }
     }
 }

@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using ChaingeRoutePlanner.Models.Requests;
 using ChaingeRoutePlanner.Models.VROOM.Input;
-using ChaingeRoutePlanner.Models.VROOM.Output;
 using ChaingeRoutePlanner.Repositories;
-using ChaingeRoutePlanner.VroomClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -37,6 +35,53 @@ namespace ChaingeRoutePlanner.Controllers
             };
 
             return await _vehicleRepository.AddVehicleAsync(vehicle);
+        }
+        
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Vehicle>> GetVehicleById(uint id)
+        {
+            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(id);
+            if (vehicle == null)
+            {
+                return NotFound();
+            }
+
+            return vehicle;
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Vehicle>> UpdateVehicle(uint id,VehicleRequest vr)
+        {
+            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(id);
+            if (vehicle == null)
+            {
+                return NotFound();
+            }
+
+            vehicle.Description = vr.Description;
+            vehicle.Capacity = vr.Capacity.HasValue ? new List<int> {(int) vr.Capacity} : new List<int> {180};
+
+            return await _vehicleRepository.UpdateVehicleAsync(vehicle);
+        }
+        
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteVehicle(uint id)
+        {
+            var vehicle = await _vehicleRepository.GetVehicleByIdAsync(id);
+            if (vehicle == null)
+            {
+                return NotFound();
+            }
+            
+            await _vehicleRepository.DeleteVehicleAsync(vehicle);
+
+            return NoContent();
         }
     }
 }

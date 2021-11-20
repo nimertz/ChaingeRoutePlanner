@@ -21,7 +21,7 @@ namespace ChaingeRoutePlannerTests
             };
             VroomApiClient apiClient = new VroomApiClient(ec);
             Assert.IsTrue(apiClient.IsHealthy().Result);
-            uint id = 0;
+            int id = 0;
             
             var response = await apiClient.PerformRequest(new VroomInput
             {
@@ -48,7 +48,8 @@ namespace ChaingeRoutePlannerTests
                     new Vehicle()
                     {
                         Id = id++,
-                        Start = new Coordinate(151.7005484, -32.9331793)
+                        Start = new Coordinate(151.7005484, -32.9331793),
+                        End = new Coordinate(151.7105484, -32.9338793)
                     }
                 }
             });
