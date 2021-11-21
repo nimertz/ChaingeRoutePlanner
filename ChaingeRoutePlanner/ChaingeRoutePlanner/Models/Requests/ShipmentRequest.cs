@@ -11,6 +11,9 @@ namespace ChaingeRoutePlanner.Models.Requests
         [JsonPropertyName("pickup")]
         public bool Pickup { get; set; } = false;
         
+        [JsonPropertyName("description")]
+        public string? Description { get; set; }
+        
         [JsonPropertyName("amount")]
         public int Amount { get; set; }
         

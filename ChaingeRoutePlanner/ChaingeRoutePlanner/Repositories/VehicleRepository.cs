@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ChaingeRoutePlanner.Models.Contexts;
 using ChaingeRoutePlanner.Models.VROOM.Input;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ChaingeRoutePlanner.Repositories
 {
@@ -12,9 +12,9 @@ namespace ChaingeRoutePlanner.Repositories
         {
         }
 
-        public Task<Vehicle> GetVehicleByIdAsync(uint id)
+        public Task<Vehicle> GetVehicleByIdAsync(int id)
         {
-            return GetAll().FirstOrDefaultAsync(x => x.Id == id);
+            return GetByIdAsync(id);
         }
 
         public Task<Vehicle> AddVehicleAsync(Vehicle vehicle)
@@ -30,6 +30,11 @@ namespace ChaingeRoutePlanner.Repositories
         public Task DeleteVehicleAsync(Vehicle vehicle)
         {
             return DeleteAsync(vehicle);
+        }
+
+        public Task<ActionResult<IEnumerable<Vehicle>>> GetAllVehiclesAsync()
+        {
+            return GetAllAsync();
         }
     }
 }

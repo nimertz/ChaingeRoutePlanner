@@ -1,7 +1,160 @@
-﻿namespace ChaingeRoutePlanner.Controllers
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ChaingeRoutePlanner.Models.Requests;
+using ChaingeRoutePlanner.Models.VROOM.Input;
+using ChaingeRoutePlanner.Repositories;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+
+namespace ChaingeRoutePlanner.Controllers
 {
-    public class ShipmentController
+    [ApiController]
+    [Route("[controller]")]
+    public class ShipmentController : ControllerBase
     {
+        private readonly ILogger<ShipmentController> _logger;
+        private readonly IShipmentRepository _shipmentRepository;
+
+        public ShipmentController(ILogger<ShipmentController> logger, IShipmentRepository shipmentRepository)
+        {
+            _logger = logger;
+            _shipmentRepository = shipmentRepository;
+        }
+        
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Shipment>> CreateShipment(ShipmentRequest sr)
+        {
+            Shipment shipment;
+            if (sr.Pickup)
+            {
+                shipment = new Shipment
+                {
+                    Pickup = new ShipmentStep
+                    {
+                        Description = sr.Description,
+                        Location = sr.Location,
+                        Service = sr.Service,
+                        TimeWindows = sr.TimeWindows
+                    },
+                    Delivery = new ShipmentStep
+                    {
+                        Description = "Chainge"
+                    },
+                    Amount = new List<int> {sr.Amount},
+                };
+            }
+            else
+            {
+                shipment = new Shipment
+                {
+                    Pickup = new ShipmentStep
+                    {
+                        Description = "Chainge"
+                    },
+                    Delivery = new ShipmentStep
+                    {
+                        Description = sr.Description,
+                        Location = sr.Location,
+                        Service = sr.Service,
+                        TimeWindows = sr.TimeWindows
+                    },
+                    Amount = new List<int> {sr.Amount},
+                };
+            }
+
+            return await _shipmentRepository.AddShipmentAsync(shipment);
+        }
+        
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Shipment>> GetShipmentById(int id)
+        {
+            var shipment = await _shipmentRepository.GetShipmentByIdAsync(id);
+            if (shipment == null)
+            {
+                return NotFound();
+            }
+
+            return shipment;
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Shipment>> UpdateShipment(int id,ShipmentRequest sr)
+        {
+            var shipment = await _shipmentRepository.GetShipmentByIdAsync(id);
+            if (shipment == null)
+            {
+                return NotFound();
+            }
+            
+            if (sr.Pickup)
+            {
+                shipment = new Shipment
+                {
+                    Pickup = new ShipmentStep
+                    {
+                        Description = sr.Description,
+                        Location = sr.Location,
+                        Service = sr.Service,
+                        TimeWindows = sr.TimeWindows
+                    },
+                    Delivery = new ShipmentStep
+                    {
+                        Description = "Chainge"
+                    },
+                    Amount = new List<int> {sr.Amount},
+                };
+            }
+            else
+            {
+                shipment = new Shipment
+                {
+                    Pickup = new ShipmentStep
+                    {
+                        Description = "Chainge"
+                    },
+                    Delivery = new ShipmentStep
+                    {
+                        Description = sr.Description,
+                        Location = sr.Location,
+                        Service = sr.Service,
+                        TimeWindows = sr.TimeWindows
+                    },
+                    Amount = new List<int> {sr.Amount},
+                };
+            }
+
+            return await _shipmentRepository.UpdateShipmentAsync(shipment);
+        }
+        
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteShipment(int id)
+        {
+            var shipment = await _shipmentRepository.GetShipmentByIdAsync(id);
+            if (shipment == null)
+            {
+                return NotFound();
+            }
+            
+            await _shipmentRepository.DeleteShipmentAsync(shipment);
+
+            return NoContent();
+        }
+        
+        [HttpGet("all")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<Shipment>>> GetAllShipments()
+        {
+            return await _shipmentRepository.GetAllShipmentsAsync();
+        }
         
     }
 }

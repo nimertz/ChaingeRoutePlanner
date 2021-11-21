@@ -16,7 +16,6 @@ namespace ChaingeRoutePlanner.Controllers
         private readonly ILogger<VehicleController> _logger;
         private readonly IVehicleRepository _vehicleRepository;
 
-
         public VehicleController(ILogger<VehicleController> logger, IVehicleRepository vehicleRepository)
         {
             _logger = logger;
@@ -40,7 +39,7 @@ namespace ChaingeRoutePlanner.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Vehicle>> GetVehicleById(uint id)
+        public async Task<ActionResult<Vehicle>> GetVehicleById(int id)
         {
             var vehicle = await _vehicleRepository.GetVehicleByIdAsync(id);
             if (vehicle == null)
@@ -54,7 +53,7 @@ namespace ChaingeRoutePlanner.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Vehicle>> UpdateVehicle(uint id,VehicleRequest vr)
+        public async Task<ActionResult<Vehicle>> UpdateVehicle(int id,VehicleRequest vr)
         {
             var vehicle = await _vehicleRepository.GetVehicleByIdAsync(id);
             if (vehicle == null)
@@ -71,7 +70,7 @@ namespace ChaingeRoutePlanner.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteVehicle(uint id)
+        public async Task<ActionResult> DeleteVehicle(int id)
         {
             var vehicle = await _vehicleRepository.GetVehicleByIdAsync(id);
             if (vehicle == null)
@@ -82,6 +81,13 @@ namespace ChaingeRoutePlanner.Controllers
             await _vehicleRepository.DeleteVehicleAsync(vehicle);
 
             return NoContent();
+        }
+        
+        [HttpGet("all")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<Vehicle>>> GetAllVehicles()
+        {
+            return await _vehicleRepository.GetAllVehiclesAsync();
         }
     }
 }

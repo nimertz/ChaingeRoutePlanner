@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ChaingeRoutePlanner.Models.Contexts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChaingeRoutePlanner.Repositories
 {
@@ -13,17 +16,22 @@ namespace ChaingeRoutePlanner.Repositories
         {
             RoutePlanningContext = routePlanningContext;
         }
-
-        public IQueryable<TEntity> GetAll()
+        
+        public async Task<ActionResult<IEnumerable<TEntity>>> GetAllAsync()
         {
             try
             {
-                return RoutePlanningContext.Set<TEntity>();
+                return  RoutePlanningContext.Set<TEntity>();
             }
             catch (Exception ex)
             {
                 throw new Exception($"Couldn't retrieve entities: {ex.Message}");
             }
+        }
+
+        public async Task<TEntity> GetByIdAsync(int id)
+        {
+            return await RoutePlanningContext.Set<TEntity>().FindAsync(id);
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
