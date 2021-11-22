@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
 
@@ -7,6 +9,14 @@ namespace ChaingeRoutePlanner.Models.VROOM.Output
 {
     public class Summary
     {
+        /// <summary>
+        /// For EF core purposes only not included in Vroom API
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonIgnore]
+        [Key]
+        public int Id { get; set; }
+        
         /// <summary>
         /// Total cost for all routes.
         /// </summary>

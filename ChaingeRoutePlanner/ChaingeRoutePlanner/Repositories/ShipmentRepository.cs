@@ -14,7 +14,7 @@ namespace ChaingeRoutePlanner.Repositories
         
         public Task<Shipment> GetShipmentByIdAsync(int id)
         {
-            return GetByIdAsync(id);
+            return RoutePlanningContext.Shipments.Include(s => s.Delivery).Include(s => s.Pickup).AsSingleQuery().FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public Task<Shipment> AddShipmentAsync(Shipment shipment)
@@ -34,7 +34,7 @@ namespace ChaingeRoutePlanner.Repositories
 
         public Task<List<Shipment>> GetAllShipmentsAsync()
         {
-            return RoutePlanningContext.Shipments.Include(s => s.Delivery).Include(s => s.Pickup).ToListAsync();
+            return RoutePlanningContext.Shipments.Include(s => s.Delivery).Include(s => s.Pickup).AsSingleQuery().ToListAsync();
         }
     }
 }

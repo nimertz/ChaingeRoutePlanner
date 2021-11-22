@@ -14,7 +14,8 @@ namespace ChaingeRoutePlanner.Models.Contexts
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Shipment> Shipments { get; set; }
         public DbSet<ShipmentStep> ShipmentSteps { get; set; }
-        
+        public DbSet<VroomOutput> VroomOutputs { get; set; }
+
         public RoutePlanningContext(DbContextOptions<RoutePlanningContext> options) : base(options)
         {
 

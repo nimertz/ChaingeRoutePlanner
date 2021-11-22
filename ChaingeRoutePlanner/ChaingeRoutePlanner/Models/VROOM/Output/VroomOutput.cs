@@ -1,10 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ChaingeRoutePlanner.Models.VROOM.Output
 {
     public class VroomOutput
     {
+        /// <summary>
+        /// For EF core purposes only not included in Vroom API
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonIgnore]
+        [Key]
+        public int Id { get; set; }
+
         [JsonIgnore]
         public bool WasSuccessful => Code == OutputCode.NoError;
         
