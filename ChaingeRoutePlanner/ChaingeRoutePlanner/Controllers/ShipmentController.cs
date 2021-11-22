@@ -37,11 +37,12 @@ namespace ChaingeRoutePlanner.Controllers
                         Description = sr.Description,
                         Location = sr.Location,
                         Service = sr.Service,
-                        TimeWindows = sr.TimeWindows
+                        TimeWindows = sr.TimeWindows == null ? null : new List<TimeWindow>(sr.TimeWindows)
                     },
                     Delivery = new ShipmentStep
                     {
-                        Description = "Chainge"
+                        Description = "Chainge",
+                        Location = new Coordinate(55.7067838, 12.5294459)
                     },
                     Amount = new List<int> {sr.Amount},
                 };
@@ -52,14 +53,15 @@ namespace ChaingeRoutePlanner.Controllers
                 {
                     Pickup = new ShipmentStep
                     {
-                        Description = "Chainge"
+                        Description = "Chainge",
+                        Location = new Coordinate(55.7067838, 12.5294459)
                     },
                     Delivery = new ShipmentStep
                     {
                         Description = sr.Description,
                         Location = sr.Location,
                         Service = sr.Service,
-                        TimeWindows = sr.TimeWindows
+                        TimeWindows = sr.TimeWindows == null ? null : new List<TimeWindow>(sr.TimeWindows)
                     },
                     Amount = new List<int> {sr.Amount},
                 };
@@ -106,7 +108,8 @@ namespace ChaingeRoutePlanner.Controllers
                     },
                     Delivery = new ShipmentStep
                     {
-                        Description = "Chainge"
+                        Description = "Chainge",
+                        Location = new Coordinate(55.7067838, 12.5294459)
                     },
                     Amount = new List<int> {sr.Amount},
                 };
@@ -117,7 +120,8 @@ namespace ChaingeRoutePlanner.Controllers
                 {
                     Pickup = new ShipmentStep
                     {
-                        Description = "Chainge"
+                        Description = "Chainge",
+                        Location = new Coordinate(55.7067838, 12.5294459)
                     },
                     Delivery = new ShipmentStep
                     {
@@ -133,7 +137,7 @@ namespace ChaingeRoutePlanner.Controllers
             return await _shipmentRepository.UpdateShipmentAsync(shipment);
         }
         
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteShipment(int id)

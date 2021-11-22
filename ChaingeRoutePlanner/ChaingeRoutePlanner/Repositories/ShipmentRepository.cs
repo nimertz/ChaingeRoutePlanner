@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ChaingeRoutePlanner.Models.Contexts;
 using ChaingeRoutePlanner.Models.VROOM.Input;
@@ -35,6 +36,11 @@ namespace ChaingeRoutePlanner.Repositories
         public Task<List<Shipment>> GetAllShipmentsAsync()
         {
             return RoutePlanningContext.Shipments.Include(s => s.Delivery).Include(s => s.Pickup).AsSingleQuery().ToListAsync();
+        }
+
+        public Task<List<Shipment>> GetShipmentsByIds(IEnumerable<int> shipmentIds)
+        {
+            return RoutePlanningContext.Shipments.Include(s => s.Delivery).Include(s => s.Pickup).AsSingleQuery().Where(s => shipmentIds.Contains(s.Id)).ToListAsync();
         }
     }
 }

@@ -16,5 +16,6 @@ namespace ChaingeRoutePlanner.Repositories
         Task DeleteShipmentAsync(Shipment shipment);
         
         Task<List<Shipment>> GetAllShipmentsAsync();
+        Task<List<Shipment>> GetShipmentsByIds(IEnumerable<int> shipmentIds);
     }
 }

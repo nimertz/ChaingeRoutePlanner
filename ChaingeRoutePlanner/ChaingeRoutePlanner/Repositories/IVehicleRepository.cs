@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ChaingeRoutePlanner.Models.VROOM.Input;
 using Microsoft.AspNetCore.Mvc;
@@ -16,5 +14,7 @@ namespace ChaingeRoutePlanner.Repositories
         Task<Vehicle> UpdateVehicleAsync(Vehicle vehicle);
         Task DeleteVehicleAsync(Vehicle vehicle);
         Task<ActionResult<IEnumerable<Vehicle>>> GetAllVehiclesAsync();
+
+        Task<List<Vehicle>> GetVehiclesByIds(IEnumerable<int> vehicleIds);
     }
 }
