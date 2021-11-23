@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ChaingeRoutePlanner.Models.VROOM.Input;
 using ChaingeRoutePlanner.Models.VROOM.Output;
 using Microsoft.AspNetCore.Mvc;
 
