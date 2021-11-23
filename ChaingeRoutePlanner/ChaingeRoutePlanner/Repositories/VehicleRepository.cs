@@ -34,9 +34,9 @@ namespace ChaingeRoutePlanner.Repositories
             return DeleteAsync(vehicle);
         }
 
-        public Task<ActionResult<IEnumerable<Vehicle>>> GetAllVehiclesAsync()
+        public async Task<List<Vehicle>> GetAllVehiclesAsync()
         {
-            return GetAllAsync();
+            return GetAllAsync().Result.Value.ToList();
         }
 
         public async Task<List<Vehicle>> GetVehiclesByIds(IEnumerable<int> vehicleIds)

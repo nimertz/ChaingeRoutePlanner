@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ChaingeRoutePlanner.Models.DTO;
 using ChaingeRoutePlanner.Models.Requests;
 using ChaingeRoutePlanner.Models.VROOM.Input;
 using ChaingeRoutePlanner.Repositories;
@@ -152,10 +153,29 @@ namespace ChaingeRoutePlanner.Controllers
 
             return NoContent();
         }
-        
         [HttpGet("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Shipment>>> GetAllShipments()
+        public async Task<ActionResult<IEnumerable<ShipmentDTO>>> GetAllShipments()
+        {
+            var shipments = await _shipmentRepository.GetAllShipmentsAsync();
+            List<ShipmentDTO> dtos = new();
+            foreach (var shipment in shipments)
+            {
+                dtos.Add(new ShipmentDTO
+                {
+                    Id = shipment.Id,
+                    Amount = shipment.Amount[0],
+                    Description = shipment.Pickup.Description + " -> " + shipment.Delivery.Description
+                });
+            }
+    
+            return Ok(dtos);
+        }
+        
+        
+        [HttpGet("all/details")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<Shipment>>> GetAllShipmentsDetails()
         {
             return Ok(await _shipmentRepository.GetAllShipmentsAsync());
         }

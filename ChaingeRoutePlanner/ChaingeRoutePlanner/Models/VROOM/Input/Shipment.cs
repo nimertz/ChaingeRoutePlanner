@@ -14,6 +14,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         [JsonIgnore]
         [Key]
         public int Id { get; set; }
+        
         [JsonIgnore]
         [ForeignKey("Pickup")]
         public int PickupId { get; set; }
