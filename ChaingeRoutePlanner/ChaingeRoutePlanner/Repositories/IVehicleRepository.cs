@@ -13,7 +13,7 @@ namespace ChaingeRoutePlanner.Repositories
         
         Task<Vehicle> UpdateVehicleAsync(Vehicle vehicle);
         Task DeleteVehicleAsync(Vehicle vehicle);
-        Task<ActionResult<IEnumerable<Vehicle>>> GetAllVehiclesAsync();
+        Task<List<Vehicle>> GetAllVehiclesAsync();
 
         Task<List<Vehicle>> GetVehiclesByIds(IEnumerable<int> vehicleIds);
     }
