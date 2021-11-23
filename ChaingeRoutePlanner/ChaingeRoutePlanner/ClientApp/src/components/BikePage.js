@@ -55,24 +55,24 @@ export class BikePage extends Component {
                             <div className="form-group">
                                 <label>Capacity</label>
                                 <div>
-                                    <Form.Control onChange={event => this.state.bikeCapacity = event.target.value} type="number" name='Capacity' id="" placeholder="Bike Description" />
+                            <input onChange={event => this.state.bikeCapacity = event.target.value} type="number" name='Capacity' id="" placeholder="Bike Description" />
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label>Active Timeroom</label>
                                 <label>Date</label>
-                                <Form.Control type="date" name='date_of_delivery'  onChange={event => this.state.data = event.target.value}/>
+                                  <input type="date" name='date_of_delivery'  onChange={event => this.state.data = event.target.value}/>
                             </div>
                             <div className="form-group">
                                 <label>Active Timeroom</label>
                                 <label>Time - Start</label>
-                                <Form.Control type="time" name='delivery_clock_start'  onChange={event => this.state.timeStart = event.target.value}/>
+                                <input type="time" name='delivery_clock_start'  onChange={event => this.state.timeStart = event.target.value}/>
                                 <label>Time - end</label>
-                                <Form.Control type="time" name='delivery_clock_end'  onChange={event => this.state.timeEnd = event.target.value}/>
+                                <input type="time" name='delivery_clock_end'  onChange={event => this.state.timeEnd = event.target.value}/>
                             </div>
                             <div className="form-group">
                                 <label >Max Tasks</label>
-                                <Form.Control onChange={event => this.state.maxTasks = event.target.value} type="number" name='date_of_birth'  />
+                                 <input onChange={event => this.state.maxTasks = event.target.value} type="number" name='date_of_birth'  />
                             </div>
                             <button onClick={this.handleSendData} className="btn btn-primary">Add Bike</button>
                 </Row>

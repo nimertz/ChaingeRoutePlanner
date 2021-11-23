@@ -108,7 +108,7 @@ export class OrderPage extends Component {
                             </div>
                             <div className="form-group">
                                 <label >Amount</label>
-                                <Form.Control onChange={event => this.state.amount = event.target.value} type="number" name='amount'  />
+                                <input onChange={event => this.state.amount = event.target.value} type="number" name='amount'  />
                             </div>
                             <div className="form-group">
                                 <label >Location</label>
@@ -117,13 +117,13 @@ export class OrderPage extends Component {
                             </div>
                             <div className="form-group">
                                 <label >Time - Start</label>
-                                <Form.Control  onChange={event => this.state.timeStart = event.target.value} type="time" name='time_start'  />
+                                <input  onChange={event => this.state.timeStart = event.target.value} type="time" name='time_start'  />
                                 <label >Time - end</label>
-                                <Form.Control  onChange={event => this.state.timeEnd = event.target.value} type="time" name='time_end'  />
+                                <input  onChange={event => this.state.timeEnd = event.target.value} type="time" name='time_end'  />
                             </div>
                             <div className="form-group">
                                 <label >Timespan</label>
-                                <Form.Control onChange={event => this.state.timeSpan = event.target.value} type="number" name='date_of_birth'  />
+                                <input onChange={event => this.state.timeSpan = event.target.value} type="number" name='date_of_birth'  />
                             </div>
                             
                             <button onClick={this.handleSendData} className="btn btn-primary">Add Order</button>
