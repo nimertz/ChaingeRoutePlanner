@@ -1,6 +1,6 @@
 using System;
 
-namespace ChaingeRoutePlanner
+namespace ChaingeRoutePlanner.Models
 {
     public class WeatherForecast
     {
