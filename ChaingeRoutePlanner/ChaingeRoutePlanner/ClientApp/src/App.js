@@ -7,6 +7,7 @@ import { Map } from './components/Map';
 import { OrderPage } from './components/OrderPage';
 import { BikePage } from './components/BikePage';
 import { Counter } from './components/Counter';
+import { ListPage } from './components/ListPage';
 
 import './custom.css'
 
@@ -22,6 +23,7 @@ export default class App extends Component {
         <Route path='/map' component={Map} />
         <Route path='/orderPage' component={OrderPage} />
         <Route path='/bikePage' component={BikePage} />
+        <Route path='/listPage' component={ListPage} />
       </Layout>
     );
   }

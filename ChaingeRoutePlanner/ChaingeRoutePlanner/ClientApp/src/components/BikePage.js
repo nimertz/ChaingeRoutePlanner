@@ -17,6 +17,7 @@ export class BikePage extends Component {
         };
     
         this.handleSendData = this.handleSendData.bind(this);
+        this.populateWeatherData = this.populateWeatherData.bind(this);
     }
 
         handleClick = (e) => {
@@ -33,11 +34,44 @@ export class BikePage extends Component {
                 "MaxTasks": this.state.maxTasks
             };
 
-            alert('Data send');
             console.log('stuff', jsonToSend);
+            this.populateWeatherData();
+            console.log('getDvic', this.postBike(this.state.bikeDescription, this.state.bikeCapacity));
 
             //event.preventDefault();
+    }
+
+    async populateWeatherData() {
+        console.log('test');
+        const response = await fetch('Vehicle/all');
+        const data = await response.json();
+        console.log(data);
+    }
+
+    postBike = async (description, capa) => {
+        const location = window.location.hostname;
+        const settings = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                // your expected POST request payload goes here
+                "description": description,
+                "capacity": capa
+            })
+
+        };
+        try {
+            const fetchResponse = await fetch(`Vehicle`, settings);
+            const data = await fetchResponse.json();
+            return data;
+        } catch (e) {
+            return e;
         }
+
+    }
     
 
     render() {

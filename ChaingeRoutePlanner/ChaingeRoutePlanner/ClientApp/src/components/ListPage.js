@@ -38,8 +38,8 @@ function LocationMarker(props) {
     )
 }
 
-export class OrderPage extends Component {
-    static displayName = OrderPage.name;
+export class ListPage extends Component {
+    static displayName = ListPage.name;
     constructor(props) {
         super(props);
         this.state = {
@@ -127,43 +127,28 @@ export class OrderPage extends Component {
             <Container>
                 <Row>
                     <Col>
-                            <div className="form-group">
-                                <Col>
-                                    <label >Pickup</label>
-                                </Col>
-                                <Col>
-                                    <input  onChange={event => this.handleCheckbox(event.target.value)} checked={this.state.checked} type="checkbox" value="Pickup" />Pickup
-                                    <br/>
-                                    <input onChange={event => this.handleCheckbox(event.target.value)} checked={!this.state.checked}  type="checkbox" value="Delivery" />Delivery
-                                </Col>
+                        <div className="list-group">
+                            <button href="#" className="list-group-item list-group-item-action active" aria-current="true">
+                                The current link item
+                            </button>
+                            <button href="#" className="list-group-item list-group-item-action">A second link item</button>
+                            <button href="#" className="list-group-item list-group-item-action">A third link item</button>
+                            <button href="#" className="list-group-item list-group-item-action">A fourth link item</button>
+                            <button href="#" className="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">A disabled link item</button>
                         </div>
-                        <div className="form-group">
-                            <label >Name</label>
-                            <input onChange={event => this.state.description = event.target.value} type="text" name='Name' />
-                        </div>
-                            <div className="form-group">
-                                <label >Amount</label>
-                                <input onChange={event => this.state.amount = event.target.value} type="number" name='amount'  />
-                            </div>
-                            <div className="form-group">
-                                <label >Location</label>
-                                <input value={this.state.lat} className="form-control" id="exampleInputPassword1" disabled={true}/>
-                                <input value={this.state.lng} className="form-control" id="exampleInputPassword1" disabled={true}/>
-                            </div>
-                            <div className="form-group">
-                                <label >Time - Start</label>
-                                <input  onChange={event => this.state.timeStart = event.target.value} type="time" name='time_start'  />
-                                <label >Time - end</label>
-                                <input  onChange={event => this.state.timeEnd = event.target.value} type="time" name='time_end'  />
-                            </div>
-                            <div className="form-group">
-                                <label >Timespan</label>
-                                <input onChange={event => this.state.timeSpan = event.target.value} type="number" name='date_of_birth'  />
-                            </div>
-                            
-                            <button onClick={this.handleSendData} className="btn btn-primary">Add Order</button>
                     </Col>
                     <Col>
+                        <div className="list-group">
+                            <button href="#" className="list-group-item list-group-item-action active" aria-current="true">
+                                The current link item
+                            </button>
+                            <button href="#" className="list-group-item list-group-item-action">A second link item</button>
+                            <button href="#" className="list-group-item list-group-item-action">A third link item</button>
+                            <button href="#" className="list-group-item list-group-item-action">A fourth link item</button>
+                            <button href="#" className="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">A disabled link item</button>
+                        </div>
+                    </Col>
+                    <Col xs={6}>
                     <MapContainer center={[ 48, 11 ]} zoom={10} scrollWheelZoom={true} eventHandlers={{
                         click: () => {
                         console.log('map clicked')
