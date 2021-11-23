@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ChaingeRoutePlanner.Models.DTO;
 using ChaingeRoutePlanner.Models.Requests;
 using ChaingeRoutePlanner.Models.VROOM.Input;
 using ChaingeRoutePlanner.Repositories;
@@ -85,7 +86,26 @@ namespace ChaingeRoutePlanner.Controllers
         
         [HttpGet("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Vehicle>>> GetAllVehicles()
+        public async Task<ActionResult<IEnumerable<VehicleDTO>>> GetAllVehicles()
+        {
+            var  v = await _vehicleRepository.GetAllVehiclesAsync();
+            List<VehicleDTO> dtos = new();
+            foreach (var vehicle in v)
+            {
+                dtos.Add(new VehicleDTO
+                {
+                    Id = vehicle.Id,
+                    Description = vehicle.Description ?? "Chainge Bike",
+                    Capacity = vehicle.Capacity != null && vehicle.Capacity.Count > 0 ? vehicle.Capacity[0] : 180
+                });
+            }
+
+            return Ok(dtos);
+        }
+        
+        [HttpGet("all/details")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<Vehicle>>> GetAllVehiclesDetails()
         {
             return Ok(await _vehicleRepository.GetAllVehiclesAsync());
         }

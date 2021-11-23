@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using ChaingeRoutePlanner.Converters;
 using ChaingeRoutePlanner.Models.VROOM.Input;
@@ -8,6 +9,13 @@ namespace ChaingeRoutePlanner.Models.VROOM.Output
 {
     public class Step
     {
+        /// <summary>
+        /// For EF core purposes only not included in Vroom API
+        /// </summary>
+        [JsonIgnore]
+        [Key]
+        public int StepId { get; set; }
+
         /// <summary>
         /// The step type.
         /// </summary>
