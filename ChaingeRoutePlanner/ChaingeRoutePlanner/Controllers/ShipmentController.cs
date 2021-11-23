@@ -42,7 +42,7 @@ namespace ChaingeRoutePlanner.Controllers
                     Delivery = new ShipmentStep
                     {
                         Description = "Chainge",
-                        Location = new Coordinate(55.7067838, 12.5294459)
+                        Location = new Coordinate(12.5294459,55.7067838)
                     },
                     Amount = new List<int> {sr.Amount},
                 };
@@ -54,7 +54,7 @@ namespace ChaingeRoutePlanner.Controllers
                     Pickup = new ShipmentStep
                     {
                         Description = "Chainge",
-                        Location = new Coordinate(55.7067838, 12.5294459)
+                        Location = new Coordinate(12.5294459,55.7067838)
                     },
                     Delivery = new ShipmentStep
                     {
@@ -67,7 +67,7 @@ namespace ChaingeRoutePlanner.Controllers
                 };
             }
 
-            return await _shipmentRepository.AddShipmentAsync(shipment);
+            return Ok(await _shipmentRepository.AddShipmentAsync(shipment));
         }
         
         [HttpGet("{id}")]
@@ -81,7 +81,7 @@ namespace ChaingeRoutePlanner.Controllers
                 return NotFound();
             }
 
-            return shipment;
+            return Ok(shipment);
         }
 
         [HttpPut("{id}")]
@@ -109,7 +109,7 @@ namespace ChaingeRoutePlanner.Controllers
                     Delivery = new ShipmentStep
                     {
                         Description = "Chainge",
-                        Location = new Coordinate(55.7067838, 12.5294459)
+                        Location = new Coordinate(12.5294459,55.7067838)
                     },
                     Amount = new List<int> {sr.Amount},
                 };
@@ -121,7 +121,7 @@ namespace ChaingeRoutePlanner.Controllers
                     Pickup = new ShipmentStep
                     {
                         Description = "Chainge",
-                        Location = new Coordinate(55.7067838, 12.5294459)
+                        Location = new Coordinate(12.5294459,55.7067838)
                     },
                     Delivery = new ShipmentStep
                     {
@@ -134,7 +134,7 @@ namespace ChaingeRoutePlanner.Controllers
                 };
             }
 
-            return await _shipmentRepository.UpdateShipmentAsync(shipment);
+            return Ok(await _shipmentRepository.UpdateShipmentAsync(shipment));
         }
         
         [HttpDelete("{id:int}")]
@@ -157,7 +157,7 @@ namespace ChaingeRoutePlanner.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Shipment>>> GetAllShipments()
         {
-            return await _shipmentRepository.GetAllShipmentsAsync();
+            return Ok(await _shipmentRepository.GetAllShipmentsAsync());
         }
         
     }

@@ -19,14 +19,16 @@ namespace ChaingeRoutePlanner.Controllers
         private IVroomApiClient _vroomApiClient;
         private IVehicleRepository _vehicleRepository;
         private IShipmentRepository _shipmentRepository;
+        private IRoutePlanRepository _routePlanRepository;
 
 
-        public RoutePlanController(ILogger<RoutePlanController> logger, EnvironmentConfig config, IVehicleRepository vehicleRepository, IShipmentRepository shipmentRepository)
+        public RoutePlanController(ILogger<RoutePlanController> logger, EnvironmentConfig config, IVehicleRepository vehicleRepository, IShipmentRepository shipmentRepository,IRoutePlanRepository routePlanRepository)
         {
             _logger = logger;
             _vroomApiClient = new VroomApiClient(config);
             _vehicleRepository = vehicleRepository;
             _shipmentRepository = shipmentRepository;
+            _routePlanRepository = routePlanRepository;
         }
 
         [HttpPost]
@@ -43,7 +45,7 @@ namespace ChaingeRoutePlanner.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<VroomOutput> GetRoutePlan(RoutePlanRequest rpq)
+        public async Task<ActionResult<VroomOutput>> GetRoutePlan(RoutePlanRequest rpq)
         {
             List<Vehicle> vehicles = await _vehicleRepository.GetVehiclesByIds(rpq.vehicleIds);
             List<Shipment> shipments = await _shipmentRepository.GetShipmentsByIds(rpq.shipmentIds);
@@ -70,9 +72,48 @@ namespace ChaingeRoutePlanner.Controllers
 
             var response = await _vroomApiClient.PerformRequest(vi);
 
+            if (response.Code == 0)
+            {
+                await _routePlanRepository.AddVroomOutputAsync(response);
+            }
+            else
+            {
+                if (response.Error != null) _logger.LogError($"Error code {response.Error} returned from Vroom API");
+                
+                return BadRequest(response.Error);
+            }
+
+            return Ok(response);
+        }
+        
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<VroomOutput>> GetRoutePlanById(int id)
+        {
+            var response = await _routePlanRepository.GetVroomOutputByIdAsync(id);
+
+            if (response == null)
+            {
+                return NotFound("No route plan found with id :" + id);
+            }
+
             return response;
         }
         
-        
+        [HttpGet("all")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<List<VroomOutput>>> GetAllRoutePlans()
+        {
+            var response = await _routePlanRepository.GetAllVroomOutputsAsync();
+
+            if (response == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(response);
+        }
     }
 }

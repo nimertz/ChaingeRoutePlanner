@@ -30,7 +30,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// The start coordinate of the vehicle.
         /// </summary>
         [JsonPropertyName("start")]
-        public Coordinate? Start { get; set; } = new Coordinate(55.70650908016281, 12.531974874491011);
+        public Coordinate? Start { get; set; } = new Coordinate(12.531613140962866,55.70687145438041);
 
         /// <summary>
         /// The start index of the vehicle in custom matrices. Only needed if supplying custom matrix.
@@ -42,7 +42,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// The end coordinate of the vehicle.
         /// </summary>
         [JsonPropertyName("end")]
-        public Coordinate? End { get; set; } = new Coordinate(55.70650908016281, 12.531974874491011);
+        public Coordinate? End { get; set; } = new Coordinate(12.531613140962866,55.70687145438041);
 
         /// <summary>
         /// The end index of the vehicle in custom matrices. Only needed if supplying custom matrix.

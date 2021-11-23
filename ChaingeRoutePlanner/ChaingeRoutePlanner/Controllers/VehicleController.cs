@@ -87,7 +87,7 @@ namespace ChaingeRoutePlanner.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetAllVehicles()
         {
-            return await _vehicleRepository.GetAllVehiclesAsync();
+            return Ok(await _vehicleRepository.GetAllVehiclesAsync());
         }
     }
 }

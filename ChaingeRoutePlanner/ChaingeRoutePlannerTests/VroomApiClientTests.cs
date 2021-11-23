@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ChaingeRoutePlanner;
 using ChaingeRoutePlanner.Models.VROOM.Input;
@@ -53,6 +54,7 @@ namespace ChaingeRoutePlannerTests
                     }
                 }
             });
+            Assert.IsTrue(response.Code == 0);
         }
         
         [TestMethod]
@@ -71,7 +73,7 @@ namespace ChaingeRoutePlannerTests
             {
                 Shipments = new List<Shipment>()
                 {
-                    new Shipment()
+                    new()
                     {
                         Id = id++,
                         Amount = new List<int> {20},
@@ -79,36 +81,28 @@ namespace ChaingeRoutePlannerTests
                         {
                             Id = id++,
                             Description = "delivery",
-                            Location = new Coordinate(151.7735849, -32.9337431),
+                            Location = new Coordinate(12.584928742097654,55.63329421574227 ),
                         },
                         Pickup = new ShipmentStep
                         {
                             Id = id++,
-                            Description = "pickup",
-                            Location = new Coordinate(151.7617514, -32.9351314)
+                            Description = "pickup at Chainge",
+                            Location = new Coordinate(12.531645327470956,55.70688354420953)
                         }
-                    },
-                    /*new Job()
-                    {
-                        Id = id++,
-                        Location = new Coordinate(151.7617514, -32.9351314)
-                    },
-                    new Job()
-                    {
-                        Id = id++,
-                        Location = new Coordinate(151.7105484, -32.9338793)
-                    }*/
+                    }
                 },
                 Vehicles = new List<Vehicle>()
                 {
                     new Vehicle()
                     {
                         Id = id++,
-                        Start = new Coordinate(151.7005484, -32.9331793),
-                        End = new Coordinate(151.7105484, -32.9338793)
+                        Start = new Coordinate(12.531613140962866,55.70687145438041),
+                        End = new Coordinate(12.531613140962866,55.70687145438041 )
                     }
                 }
             });
+            
+            Assert.IsTrue(response.Code == 0);
         }
     }
 }

@@ -37,6 +37,7 @@ namespace ChaingeRoutePlanner
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<IVehicleRepository, VehicleRepository>();
             services.AddTransient<IShipmentRepository, ShipmentRepository>();
+            services.AddTransient<IRoutePlanRepository, RoutePlanRepository>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
