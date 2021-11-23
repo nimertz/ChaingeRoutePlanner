@@ -1,7 +1,9 @@
+using ChaingeRoutePlanner.Models.Contexts;
+using ChaingeRoutePlanner.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +22,22 @@ namespace ChaingeRoutePlanner
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //use appsettings.json to configure the environment constants
+            var section = Configuration.GetSection("EnvironmentConfig").Get<EnvironmentConfig>();
+            services.AddSingleton(section);
+            
             services.AddControllersWithViews();
+            
+            //DI of DbContext
+            services.AddDbContextPool<RoutePlanningContext>(option =>
+            {
+                if (section.ConnectionString != null) option.UseNpgsql(section.ConnectionString);
+            });
+            
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IVehicleRepository, VehicleRepository>();
+            services.AddTransient<IShipmentRepository, ShipmentRepository>();
+            services.AddTransient<IRoutePlanRepository, RoutePlanRepository>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import { Button, Row, Col, Container } from 'react-bootstrap';
-import Form from "react-bootstrap/Form";
+import { Button, Row, Col, Container, Form } from 'reactstrap';
+
 export class BikePage extends Component {
     static displayName = BikePage.name;
     constructor(props) {
