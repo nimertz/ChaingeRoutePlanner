@@ -68,8 +68,8 @@ namespace ChaingeRoutePlannerTests
             VroomApiClient apiClient = new VroomApiClient(ec);
             Assert.IsTrue(apiClient.IsHealthy().Result);
             int id = 0;
-            
-            var response = await apiClient.PerformRequest(new VroomInput
+
+            VroomInput vi = new VroomInput
             {
                 Shipments = new List<Shipment>()
                 {
@@ -81,13 +81,13 @@ namespace ChaingeRoutePlannerTests
                         {
                             Id = id++,
                             Description = "delivery",
-                            Location = new Coordinate(12.584928742097654,55.63329421574227 ),
+                            Location = new Coordinate(12.584928742097654, 55.63329421574227),
                         },
                         Pickup = new ShipmentStep
                         {
                             Id = id++,
                             Description = "pickup at Chainge",
-                            Location = new Coordinate(12.531645327470956,55.70688354420953)
+                            Location = new Coordinate(12.531645327470956, 55.70688354420953)
                         }
                     }
                 },
@@ -96,11 +96,12 @@ namespace ChaingeRoutePlannerTests
                     new Vehicle()
                     {
                         Id = id++,
-                        Start = new Coordinate(12.531613140962866,55.70687145438041),
-                        End = new Coordinate(12.531613140962866,55.70687145438041 )
+                        Start = new Coordinate(12.531613140962866, 55.70687145438041),
+                        End = new Coordinate(12.531613140962866, 55.70687145438041)
                     }
-                }
-            });
+                },
+            };
+            var response = await apiClient.PerformRequest(vi);
             
             Assert.IsTrue(response.Code == 0);
         }

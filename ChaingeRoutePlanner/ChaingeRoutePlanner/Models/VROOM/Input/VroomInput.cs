@@ -28,5 +28,11 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// </summary>
         [JsonPropertyName("matrices")]
         public Dictionary<string, Matrice>? Matrices { get; set; }
+
+        [JsonPropertyName("options")]
+        public Dictionary<string, bool> options { get; set; } = new()
+        {
+            {"g",true},
+        };
     }
 }
