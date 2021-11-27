@@ -6,7 +6,7 @@ function LocationMarker(props) {
     const [position, setPosition] = useState(null)
     const map = useMapEvents({
         click(e) {
-            console.log('test', e)
+            console.log('location', e)
 
             props.effectOn.setState(state => {
                 state.lat = e.latlng.lat;
@@ -19,11 +19,7 @@ function LocationMarker(props) {
             let center = map.getCenter();
             let zoom = map.getZoom();
 
-            props.effectOn.setState(state => {
-                state.lat = center.lat;
-                state.lng = center.lng;
-                return { ...state }
-            });
+            
         },
         locationfound(e) {
             setPosition(e.latlng)
@@ -93,7 +89,7 @@ export class OrderPage extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                // your expected POST request payload goes here
+                //TODO add time windows
                 "pickup": pickup,
                 "description": descrip,
                 "amount": amount,
@@ -123,6 +119,7 @@ export class OrderPage extends Component {
             <Container>
                 <Row>
                     <Col>
+                        <h1>Order Shipment</h1>
                             <div className="form-group">
                                 <Col>
                                     <label >Pickup</label>
@@ -134,7 +131,7 @@ export class OrderPage extends Component {
                                 </Col>
                         </div>
                         <div className="form-group">
-                            <label >Name</label>
+                            <label >Description</label>
                             <input onChange={event => this.state.description = event.target.value} type="text" name='Name' />
                         </div>
                             <div className="form-group">
@@ -143,21 +140,21 @@ export class OrderPage extends Component {
                             </div>
                             <div className="form-group">
                                 <label >Location</label>
-                                <input value={this.state.lat} className="form-control" id="exampleInputPassword1" disabled={true}/>
-                                <input value={this.state.lng} className="form-control" id="exampleInputPassword1" disabled={true}/>
+                                <input value={this.state.lat} className="form-control" id="lat" disabled={true}/>
+                                <input value={this.state.lng} className="form-control" id="lng" disabled={true}/>
                             </div>
                             <div className="form-group">
                                 <label >Time - Start</label>
-                                <input  onChange={event => this.state.timeStart = event.target.value} type="time" name='time_start'  />
+                                <input  onChange={event => this.state.timeStart = event.target.value} type="time-end" name='time_start'  />
                                 <label >Time - end</label>
-                                <input  onChange={event => this.state.timeEnd = event.target.value} type="time" name='time_end'  />
+                                <input  onChange={event => this.state.timeEnd = event.target.value} type="time-start" name='time_end'  />
                             </div>
                             <div className="form-group">
                                 <label >Timespan</label>
                                 <input onChange={event => this.state.timeSpan = event.target.value} type="number" name='date_of_birth'  />
                             </div>
                             
-                            <button onClick={this.handleSendData} className="btn btn-primary">Add Order</button>
+                            <Button onClick={this.handleSendData} className="btn btn-primary">Add Order</Button>
                     </Col>
                     <Col>
                     <MapContainer center={[ 55.66064229583371, 12.59125202894211 ]} zoom={10} scrollWheelZoom={true} eventHandlers={{
@@ -170,6 +167,11 @@ export class OrderPage extends Component {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                             <LocationMarker effectOn={this}/>
+                            <Marker position={[ this.state.lat, this.state.lng ]}>
+                                <Popup>
+                                   Location of pickup or delivery
+                                </Popup>
+                            </Marker>
                         </MapContainer>
                     </Col>
                 </Row>

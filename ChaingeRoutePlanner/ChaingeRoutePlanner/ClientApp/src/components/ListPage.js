@@ -34,10 +34,7 @@ export class ListPage extends Component {
         super(props);
         this.state = {
             loading: true,
-            
-            lat: 35.76218444303944,
-            lng: 51.33657932281495,
-            location: [0,0],
+            center: [55.66064229583371, 12.59125202894211],
             
             vehicles: [],
             shipments: [],
@@ -102,9 +99,10 @@ export class ListPage extends Component {
         });
         const data = await response.json();
         console.log(data);
-
+        //TODO make map adjust zoom & center based on route results
         this.setState({
-            routes: data.routes
+            routes: data.routes,
+            center: [data.routes[0].steps[0].location[1], data.routes[0].steps[0].location[0]]
         });
     }
 
@@ -116,6 +114,19 @@ export class ListPage extends Component {
     
     static decodeGeometry(geometry) {
         return Polyline.decode(geometry);
+    }
+    
+    static convertDuration(duration) {
+        //convert to hh:mm:ss
+        let hours = Math.floor(duration / 3600);
+        let minutes = Math.floor((duration - (hours * 3600)) / 60);
+        let seconds = duration - (hours * 3600) - (minutes * 60);
+        return `${hours}h ${minutes}m ${seconds}s`;
+    }
+    
+    static generateRandomPolygonColor() {
+        let colors = ["red" , "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "grey"];
+        return colors[Math.floor(Math.random() * colors.length)];
     }
 
      renderVehicleList(vehicles) {
@@ -164,7 +175,7 @@ export class ListPage extends Component {
                     </div>
                 </Col>
                 <Col xs={6}>
-                    <MapContainer center={[55.66064229583371, 12.59125202894211]} zoom={15} scrollWheelZoom={true} eventHandlers={{
+                    <MapContainer center={this.state.center} zoom={15} scrollWheelZoom={true} eventHandlers={{
                         click: () => {
                             console.log('map clicked')
                         },
@@ -174,8 +185,20 @@ export class ListPage extends Component {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                        {this.state.routes.map(route =>
-                            <PL positions={ListPage.decodeGeometry(route.geometry)} color="red" />
+                            <PL  positions={ListPage.decodeGeometry(route.geometry)} color={ListPage.generateRandomPolygonColor()} />
                         )}
+                        {this.state.routes.map(route =>
+                            route.steps.map( step =>
+                                <Marker position={[step.location[1], step.location[0]]}>
+                                    <Popup>
+                                        {step.description}<br/>
+                                        <b>Vehicle:</b> {route.vehicle}<br/>
+                                        <b>Type:</b> {step.type}<br/>
+                                        <b>Travel time:</b> {ListPage.convertDuration(step.duration)}<br/>
+                                        <b>Vehicle Load:</b> {step.load}<br/>
+                                    </Popup>
+                                </Marker>
+                            ))}
                         <LocationMarker effectOn={this}/>
                     </MapContainer>
                 </Col>

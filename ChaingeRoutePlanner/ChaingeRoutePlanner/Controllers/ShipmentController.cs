@@ -43,7 +43,7 @@ namespace ChaingeRoutePlanner.Controllers
                     Delivery = new ShipmentStep
                     {
                         Description = "Chainge",
-                        Location = new Coordinate(12.5294459,55.7067838)
+                        Location = new Coordinate(12.531511187553406,55.70711874697016)
                     },
                     Amount = new List<int> {sr.Amount},
                 };
@@ -55,7 +55,7 @@ namespace ChaingeRoutePlanner.Controllers
                     Pickup = new ShipmentStep
                     {
                         Description = "Chainge",
-                        Location = new Coordinate(12.5294459,55.7067838)
+                        Location = new Coordinate(12.531511187553406,55.70711874697016)
                     },
                     Delivery = new ShipmentStep
                     {
