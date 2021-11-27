@@ -1,29 +1,18 @@
 import React, { Component, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup,useMapEvents  } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup,useMapEvents, Polyline as PL } from 'react-leaflet'
 import { Button, Row, Col, Container} from 'reactstrap';
+import Polyline from '@mapbox/polyline'
 
 function LocationMarker(props) {
     const [position, setPosition] = useState(null)
     const map = useMapEvents({
         click(e) {
-            console.log('test', e)
-
-            props.effectOn.setState(state => {
-                state.lat = e.latlng.lat;
-                state.lng = e.latlng.lng;
-                return { ...state }
-            });
-            //map.locate()
+            console.log('Click', e)
         },
         moveend() {
             let center = map.getCenter();
             let zoom = map.getZoom();
-
-            props.effectOn.setState(state => {
-                state.lat = center.lat;
-                state.lng = center.lng;
-                return { ...state }
-            });
+            console.log('Zoom:', zoom, 'Center:', center)
         },
         locationfound(e) {
             setPosition(e.latlng)
@@ -48,60 +37,45 @@ export class ListPage extends Component {
             
             lat: 35.76218444303944,
             lng: 51.33657932281495,
-            checked: false,
             location: [0,0],
             
             vehicles: [],
             shipments: [],
             selectedShipments: [],
             selectedVehicles: [],
+            
+            routes: [],
         };
     }
 
     componentDidMount() {
         this.populateLists();
     }
-
-    static renderVehicleList(vehicles) {
-        return (
-            <ul className="list-group">
-                <h5>Vehicles</h5>
-                {vehicles.map(vehicle =>
-                    <li className="list-group-item">
-                        <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."/>
-                        {vehicle.description}
-                    </li>
-                )}
-            </ul>
-        );
+    
+    handleCheckVehicle(id) {
+        if (this.state.selectedVehicles.includes(id)) {
+            this.setState({
+                selectedVehicles: this.state.selectedVehicles.filter(v => v !== id)
+            })
+        } else {
+            this.setState({
+                selectedVehicles: [...this.state.selectedVehicles, id]
+            })
+        }
     }
 
-    static renderShipmentList(shipments) {
-        return (
-            <ul className="list-group">
-                <h5>Shipments</h5>
-                {shipments.map(vehicle =>
-                    <li className="list-group-item">
-                        <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."/>
-                        {vehicle.description}
-                    </li>
-                )}
-            </ul>
-        );
+    handleCheckShipment(id) {
+        if (this.state.selectedShipments.includes(id)) {
+            this.setState({
+                selectedShipments: this.state.selectedShipments.filter(s => s !== id)
+            })
+        } else {
+            this.setState({
+                selectedShipments: [...this.state.selectedShipments, id]
+            })
+        }
     }
-
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : ListPage.renderContents(this.state.vehicles, this.state.shipments);
-            
-        return (
-            <Container>
-                    {contents}
-            </Container>
-        );
-    }
-
+    
     async populateShipmentData() {
         const response = await fetch('Shipment/all');
         const data = await response.json();
@@ -114,10 +88,67 @@ export class ListPage extends Component {
         this.setState({ vehicles: data});
     }
 
-    static renderContents(vehicles, shipments) {
-        let vehicleContent =  ListPage.renderVehicleList(vehicles);
-        let shipmentContent = ListPage.renderShipmentList(shipments);
-        
+    async postRoutePlan() {
+        const response = await fetch('RoutePlan', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                vehicleIds: this.state.selectedVehicles,
+                shipmentIds: this.state.selectedShipments,
+            })
+        });
+        const data = await response.json();
+        console.log(data);
+
+        this.setState({
+            routes: data.routes
+        });
+    }
+
+    populateLists() {
+        this.populateVehicleData();
+        this.populateShipmentData()
+        this.setState({ loading: false });
+    }
+    
+    static decodeGeometry(geometry) {
+        return Polyline.decode(geometry);
+    }
+
+     renderVehicleList(vehicles) {
+        return (
+            <ul className="list-group">
+                <h5>Vehicles</h5>
+                {vehicles.map(vehicle =>
+                    <li className="list-group-item" key={vehicle.id}>
+                        <input onChange={() =>this.handleCheckVehicle(vehicle.id) } className="form-check-input me-1" type="checkbox" value="Vehicle" aria-label="..."/>
+                        {vehicle.id}: {vehicle.description} - {vehicle.capacity} kg
+                    </li>
+                )}
+            </ul>
+        );
+    }
+    
+     renderShipmentList(shipments) {
+        return (
+            <ul className="list-group">
+                <h5>Shipments</h5>
+                {shipments.map(shipment =>
+                    <li className="list-group-item" key={shipment.id}>
+                        <input onChange={() =>this.handleCheckShipment(shipment.id) } className="form-check-input me-1" type="checkbox" value="Shipment" aria-label="..."/>
+                        {shipment.id}: {shipment.description}
+                    </li>
+                )}
+            </ul>
+        );
+    }
+    renderContents(vehicles, shipments) {
+        let vehicleContent =  this.renderVehicleList(vehicles);
+        let shipmentContent = this.renderShipmentList(shipments);
+
         return (
             <Row>
                 <Col>
@@ -126,14 +157,14 @@ export class ListPage extends Component {
                 <Col>
                     {shipmentContent}
                     <div>
-                        <Button
-                            color="primary">
+                        <Button onClick={() => this.postRoutePlan()}
+                                color="primary">
                             Create route plan
                         </Button>
                     </div>
                 </Col>
                 <Col xs={6}>
-                    <MapContainer center={[48, 11]} zoom={10} scrollWheelZoom={true} eventHandlers={{
+                    <MapContainer center={[55.66064229583371, 12.59125202894211]} zoom={15} scrollWheelZoom={true} eventHandlers={{
                         click: () => {
                             console.log('map clicked')
                         },
@@ -142,6 +173,9 @@ export class ListPage extends Component {
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
+                       {this.state.routes.map(route =>
+                            <PL positions={ListPage.decodeGeometry(route.geometry)} color="red" />
+                        )}
                         <LocationMarker effectOn={this}/>
                     </MapContainer>
                 </Col>
@@ -149,9 +183,21 @@ export class ListPage extends Component {
         );
     }
 
-    populateLists() {
-        this.populateVehicleData();
-        this.populateShipmentData()
-        this.setState({ loading: false });
+    render() {
+        let contents = this.state.loading
+            ? <p><em>Loading...</em></p>
+            : this.renderContents(this.state.vehicles, this.state.shipments);
+            
+        return (
+            <Container>
+                    {contents}
+            </Container>
+        );
     }
+
+    
+    
+    
+     
+    
 }

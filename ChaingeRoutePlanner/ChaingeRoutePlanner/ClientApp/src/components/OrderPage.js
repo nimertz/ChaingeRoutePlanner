@@ -60,32 +60,28 @@ export class OrderPage extends Component {
         this.handleCheckbox = this.handleCheckbox.bind(this);
     }
 
-        handleClick = (e) => {
-            console.log(e.latlng)
-        }
+    handleSendData(event) {
 
-        handleSendData(event) {
+        const jsonToSend = {
+            "Pickup": this.state.checked,
+            "Amount": this.state.amount,
+            "Location": [this.state.lat, this.state.lng],
+            "Time": [this.state.timeStart, this.state.timeEnd],
+            "TimeSpan": this.state.timeSpan
+        };
 
-            const jsonToSend = {
-                "Pickup": this.state.checked,
-                "Amount": this.state.amount,
-                "Location": [this.state.lat, this.state.lng],
-                "Time": [this.state.timeStart, this.state.timeEnd],
-                "TimeSpan": this.state.timeSpan
-            };
+        alert('Data send');
+        console.log('stuff', jsonToSend);
+        console.log(this.postPackage(this.state.checked, this.state.amount, this.state.lng, this.state.lat, this.state.description))
 
-            alert('Data send');
-            console.log('stuff', jsonToSend);
-            console.log(this.postPackage(this.state.checked, this.state.amount, this.state.lng, this.state.lat, this.state.description))
-
-            //event.preventDefault();
-        }
-
-        handleCheckbox(input){
-            this.setState({
-                checked: !this.state.checked
-              });
+        //event.preventDefault();
     }
+
+    handleCheckbox(input){
+        this.setState({
+            checked: !this.state.checked
+          });
+    }       
 
     postPackage = async (pickup, amount, long, lat, descrip) => {
         const location = window.location.hostname;
@@ -164,7 +160,7 @@ export class OrderPage extends Component {
                             <button onClick={this.handleSendData} className="btn btn-primary">Add Order</button>
                     </Col>
                     <Col>
-                    <MapContainer center={[ 48, 11 ]} zoom={10} scrollWheelZoom={true} eventHandlers={{
+                    <MapContainer center={[ 55.66064229583371, 12.59125202894211 ]} zoom={10} scrollWheelZoom={true} eventHandlers={{
                         click: () => {
                         console.log('map clicked')
                         },
