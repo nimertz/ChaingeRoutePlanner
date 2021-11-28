@@ -116,6 +116,10 @@ export class ListPage extends Component {
         return Polyline.decode(geometry);
     }
     
+    isButtonDisabled() {
+        return this.state.selectedVehicles.length === 0 || this.state.selectedShipments.length === 0;
+    }
+    
     static convertDuration(duration) {
         //convert to hh:mm:ss
         let hours = Math.floor(duration / 3600);
@@ -168,7 +172,7 @@ export class ListPage extends Component {
                 <Col>
                     {shipmentContent}
                     <div>
-                        <Button onClick={() => this.postRoutePlan()}
+                        <Button onClick={() => this.postRoutePlan()} disabled={this.isButtonDisabled()}
                                 color="primary">
                             Create route plan
                         </Button>
