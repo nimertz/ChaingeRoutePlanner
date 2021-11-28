@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup,useMapEvents  } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline  } from 'react-leaflet'
 import { Button, Row, Col, Container, Form } from 'reactstrap';
 
 function LocationMarker(props) {
@@ -51,9 +51,15 @@ export class ListPage extends Component {
             timeStart: '',
             timeEnd: '',
             timeSpan: '',
-            lat: 35.76218444303944,
-            lng: 51.33657932281495,
-            checked: false
+            lat: 51.5054,
+            lng: -0.09,
+            bikeList: [1, 2, 3, 4, 5],
+            packageList: [1, 2, 3, 4, 5],
+            polyline: [
+                [51.505, -0.09],
+                [51.51, -0.1],
+                [51.51, -0.12],
+            ]
         };
     
         this.handleSendData = this.handleSendData.bind(this);
@@ -122,6 +128,10 @@ export class ListPage extends Component {
         console.log(e.latlng)
     }
 
+
+
+  
+
     render() {
         return (
             <Container>
@@ -139,13 +149,9 @@ export class ListPage extends Component {
                     </Col>
                     <Col>
                         <div className="list-group">
-                            <button href="#" className="list-group-item list-group-item-action active" aria-current="true">
-                                The current link item
-                            </button>
-                            <button href="#" className="list-group-item list-group-item-action">A second link item</button>
-                            <button href="#" className="list-group-item list-group-item-action">A third link item</button>
-                            <button href="#" className="list-group-item list-group-item-action">A fourth link item</button>
-                            <button href="#" className="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">A disabled link item</button>
+                            {
+                                this.state.bikeList.map((object, i) => <button href="#" className="list-group-item list-group-item-action" key={object + i}> {object} </button>)
+                            }
                         </div>
                     </Col>
                     <Col xs={6}>
@@ -158,7 +164,8 @@ export class ListPage extends Component {
                                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
-                            <LocationMarker effectOn={this}/>
+                            <LocationMarker effectOn={this} />
+                            <Polyline pathOptions={{ color: 'red' }} positions={this.state.polyline} />
                         </MapContainer>
                     </Col>
                 </Row>
