@@ -1,6 +1,6 @@
-import React, { Component, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup,useMapEvents  } from 'react-leaflet'
-import { Button, Row, Col, Container, Form } from 'reactstrap';
+import React, {Component, useState} from 'react';
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from 'react-leaflet'
+import {Button, Col, Container, Row} from 'reactstrap';
 
 function LocationMarker(props) {
     const [position, setPosition] = useState(null)
@@ -44,8 +44,8 @@ export class OrderPage extends Component {
             pickup: false,
             location: [0,0],
             amount: '',
-            timeStart: '',
-            timeEnd: '',
+            window_start: 0,
+            window_end: 0,
             timeSpan: '',
             lat: 35.76218444303944,
             lng: 51.33657932281495,
@@ -62,13 +62,13 @@ export class OrderPage extends Component {
             "Pickup": this.state.checked,
             "Amount": this.state.amount,
             "Location": [this.state.lat, this.state.lng],
-            "Time": [this.state.timeStart, this.state.timeEnd],
+            "Time_windows": [this.state.window_start, this.state.window_end],
             "TimeSpan": this.state.timeSpan
         };
 
         alert('Data send');
-        console.log('stuff', jsonToSend);
-        console.log(this.postPackage(this.state.checked, this.state.amount, this.state.lng, this.state.lat, this.state.description))
+        console.log('Json values', jsonToSend);
+        console.log(this.postPackage(this.state.checked, this.state.amount, this.state.lng, this.state.lat, this.state.description, this.state.window_start, this.state.window_end));
 
         //event.preventDefault();
     }
@@ -79,27 +79,50 @@ export class OrderPage extends Component {
           });
     }       
 
-    postPackage = async (pickup, amount, long, lat, descrip) => {
-        const location = window.location.hostname;
-        console.log('123', this.state.lon)
-        const settings = {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                //TODO add time windows
-                "pickup": pickup,
-                "description": descrip,
-                "amount": amount,
-                "location": [
-                    long,
-                    lat
-                ]
-            })
-
-        };
+    postPackage = async (pickup, amount, long, lat, desc,timeStart,timeEnd) => {
+        //exclude timeStart and timeEnd if not set
+        let settings;
+        if(timeStart === 0 || timeEnd === 0){
+             settings = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "pickup": pickup,
+                    "description": desc,
+                    "amount": amount,
+                    "location": [
+                        long,
+                        lat
+                    ]
+                })
+        }
+        } else {
+            settings = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "pickup": pickup,
+                    "description": desc,
+                    "amount": amount,
+                    "location": [
+                        long,
+                        lat
+                    ],
+                    "time_windows": [
+                        [
+                            timeStart,
+                            timeEnd
+                        ]
+                    ]
+                })
+            }
+        }
         try {
             const fetchResponse = await fetch(`Shipment`, settings);
             const data = await fetchResponse.json();
@@ -112,6 +135,13 @@ export class OrderPage extends Component {
 
     handleClick = (e) => {
         console.log(e.latlng)
+    }
+    
+    static convertDateTimeToInt64(value) {
+        //convert date time to UTC +1
+        let date = new Date(value);
+        date.setHours(date.getHours() + 1);
+        return parseInt((date.getTime() / 1000).toFixed(0))
     }
 
     render() {
@@ -145,9 +175,9 @@ export class OrderPage extends Component {
                             </div>
                             <div className="form-group">
                                 <label >Time - Start</label>
-                                <input  onChange={event => this.state.timeStart = event.target.value} type="time-end" name='time_start'  />
+                                <input  onChange={event => this.state.window_start = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_start'  />
                                 <label >Time - end</label>
-                                <input  onChange={event => this.state.timeEnd = event.target.value} type="time-start" name='time_end'  />
+                                <input  onChange={event => this.state.window_end = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_end'  />
                             </div>
                             <div className="form-group">
                                 <label >Timespan</label>

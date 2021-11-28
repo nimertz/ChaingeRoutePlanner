@@ -38,7 +38,7 @@ namespace ChaingeRoutePlanner.Controllers
                         Description = sr.Description,
                         Location = sr.Location,
                         Service = sr.Service,
-                        TimeWindows = sr.TimeWindows == null ? null : new List<TimeWindow>(sr.TimeWindows)
+                        TimeWindows = sr.TimeWindows
                     },
                     Delivery = new ShipmentStep
                     {
@@ -62,7 +62,7 @@ namespace ChaingeRoutePlanner.Controllers
                         Description = sr.Description,
                         Location = sr.Location,
                         Service = sr.Service,
-                        TimeWindows = sr.TimeWindows == null ? null : new List<TimeWindow>(sr.TimeWindows)
+                        TimeWindows = sr.TimeWindows
                     },
                     Amount = new List<int> {sr.Amount},
                 };
@@ -71,7 +71,7 @@ namespace ChaingeRoutePlanner.Controllers
             return Ok(await _shipmentRepository.AddShipmentAsync(shipment));
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Shipment>> GetShipmentById(int id)
