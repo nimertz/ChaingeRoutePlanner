@@ -31,7 +31,8 @@ namespace ChaingeRoutePlanner.Controllers
             var vehicle = new Vehicle
             {
                 Description = vr.Description,
-                Capacity = vr.Capacity.HasValue ? new List<int> {(int) vr.Capacity} : new List<int> {180}
+                Capacity = vr.Capacity.HasValue ? new List<int> {(int) vr.Capacity} : new List<int> {180},
+                TimeWindow = vr.TimeWindow
             };
 
             return await _vehicleRepository.AddVehicleAsync(vehicle);

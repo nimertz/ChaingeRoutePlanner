@@ -1,12 +1,12 @@
-import React, { Component, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup,useMapEvents  } from 'react-leaflet'
-import { Button, Row, Col, Container, Form } from 'reactstrap';
+import React, {Component, useState} from 'react';
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from 'react-leaflet'
+import {Button, Col, Container, Input, Label, Row, Form, FormGroup} from 'reactstrap';
 
 function LocationMarker(props) {
     const [position, setPosition] = useState(null)
     const map = useMapEvents({
         click(e) {
-            console.log('test', e)
+            console.log('location', e)
 
             props.effectOn.setState(state => {
                 state.lat = e.latlng.lat;
@@ -19,11 +19,7 @@ function LocationMarker(props) {
             let center = map.getCenter();
             let zoom = map.getZoom();
 
-            props.effectOn.setState(state => {
-                state.lat = center.lat;
-                state.lng = center.lng;
-                return { ...state }
-            });
+            
         },
         locationfound(e) {
             setPosition(e.latlng)
@@ -48,8 +44,8 @@ export class OrderPage extends Component {
             pickup: false,
             location: [0,0],
             amount: '',
-            timeStart: '',
-            timeEnd: '',
+            window_start: 0,
+            window_end: 0,
             timeSpan: '',
             lat: 35.76218444303944,
             lng: 51.33657932281495,
@@ -60,54 +56,73 @@ export class OrderPage extends Component {
         this.handleCheckbox = this.handleCheckbox.bind(this);
     }
 
-        handleClick = (e) => {
-            console.log(e.latlng)
-        }
+    handleSendData(event) {
 
-        handleSendData(event) {
+        const jsonToSend = {
+            "Pickup": this.state.checked,
+            "Amount": this.state.amount,
+            "Location": [this.state.lat, this.state.lng],
+            "Time_windows": [this.state.window_start, this.state.window_end],
+            "TimeSpan": this.state.timeSpan
+        };
 
-            const jsonToSend = {
-                "Pickup": this.state.checked,
-                "Amount": this.state.amount,
-                "Location": [this.state.lat, this.state.lng],
-                "Time": [this.state.timeStart, this.state.timeEnd],
-                "TimeSpan": this.state.timeSpan
-            };
+        alert('Data send');
+        console.log('Json values', jsonToSend);
+        console.log(this.postPackage(this.state.checked, this.state.amount, this.state.lng, this.state.lat, this.state.description, this.state.window_start, this.state.window_end));
 
-            alert('Data send');
-            console.log('stuff', jsonToSend);
-            console.log(this.postPackage(this.state.checked, this.state.amount, this.state.lng, this.state.lat, this.state.description))
-
-            //event.preventDefault();
-        }
-
-        handleCheckbox(input){
-            this.setState({
-                checked: !this.state.checked
-              });
+        //event.preventDefault();
     }
 
-    postPackage = async (pickup, amount, long, lat, descrip) => {
-        const location = window.location.hostname;
-        console.log('123', this.state.lon)
-        const settings = {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                // your expected POST request payload goes here
-                "pickup": pickup,
-                "description": descrip,
-                "amount": amount,
-                "location": [
-                    long,
-                    lat
-                ]
-            })
+    handleCheckbox(input){
+        this.setState({
+            checked: !this.state.checked
+          });
+    }       
 
-        };
+    postPackage = async (pickup, amount, long, lat, desc,timeStart,timeEnd) => {
+        //exclude timeStart and timeEnd if not set
+        let settings;
+        if(timeStart === 0 || timeEnd === 0){
+             settings = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "pickup": pickup,
+                    "description": desc,
+                    "amount": amount,
+                    "location": [
+                        long,
+                        lat
+                    ]
+                })
+        }
+        } else {
+            settings = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "pickup": pickup,
+                    "description": desc,
+                    "amount": amount,
+                    "location": [
+                        long,
+                        lat
+                    ],
+                    "time_windows": [
+                        [
+                            timeStart,
+                            timeEnd
+                        ]
+                    ]
+                })
+            }
+        }
         try {
             const fetchResponse = await fetch(`Shipment`, settings);
             const data = await fetchResponse.json();
@@ -121,50 +136,51 @@ export class OrderPage extends Component {
     handleClick = (e) => {
         console.log(e.latlng)
     }
+    
+    static convertDateTimeToInt64(value) {
+        //convert date time to UTC +1
+        let date = new Date(value);
+        date.setHours(date.getHours() + 1);
+        return parseInt((date.getTime() / 1000).toFixed(0))
+    }
 
     render() {
         return (
             <Container>
                 <Row>
                     <Col>
-                            <div className="form-group">
-                                <Col>
-                                    <label >Pickup</label>
-                                </Col>
-                                <Col>
-                                    <input  onChange={event => this.handleCheckbox(event.target.value)} checked={this.state.checked} type="checkbox" value="Pickup" />Pickup
-                                    <br/>
-                                    <input onChange={event => this.handleCheckbox(event.target.value)} checked={!this.state.checked}  type="checkbox" value="Delivery" />Delivery
-                                </Col>
-                        </div>
-                        <div className="form-group">
-                            <label >Name</label>
-                            <input onChange={event => this.state.description = event.target.value} type="text" name='Name' />
-                        </div>
-                            <div className="form-group">
-                                <label >Amount</label>
-                                <input onChange={event => this.state.amount = event.target.value} type="number" name='amount'  />
-                            </div>
-                            <div className="form-group">
-                                <label >Location</label>
-                                <input value={this.state.lat} className="form-control" id="exampleInputPassword1" disabled={true}/>
-                                <input value={this.state.lng} className="form-control" id="exampleInputPassword1" disabled={true}/>
-                            </div>
-                            <div className="form-group">
-                                <label >Time - Start</label>
-                                <input  onChange={event => this.state.timeStart = event.target.value} type="time" name='time_start'  />
-                                <label >Time - end</label>
-                                <input  onChange={event => this.state.timeEnd = event.target.value} type="time" name='time_end'  />
-                            </div>
-                            <div className="form-group">
-                                <label >Timespan</label>
-                                <input onChange={event => this.state.timeSpan = event.target.value} type="number" name='date_of_birth'  />
-                            </div>
-                            
-                            <button onClick={this.handleSendData} className="btn btn-primary">Add Order</button>
+                        <Form>
+                            <h1>Order Shipment</h1>
+                            <FormGroup row>
+                                    <Label>Shipment type:</Label>
+                                    <Input onChange={event => this.handleCheckbox(event.target.value)} checked={!this.state.checked}  type="checkbox" value="Delivery" />Delivery
+                                    <Input  onChange={event => this.handleCheckbox(event.target.value)} checked={this.state.checked} type="checkbox" value="Pickup" />Pickup
+                            </FormGroup>
+                            <FormGroup>
+                                <Label >Description</Label>
+                                <Input onChange={event => this.state.description = event.target.value} type="text" name='Name' />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label >Weight</Label>
+                                <Input onChange={event => this.state.amount = event.target.value} type="number" name='amount'  />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label >Location</Label>
+                                <Input value={this.state.lat} className="form-control" id="lat" disabled={true}/>
+                                <Input value={this.state.lng} className="form-control" id="lng" disabled={true}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <h4>Time Window</h4>
+                                <Label >Between :</Label>
+                                <Input  onChange={event => this.state.window_start = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_start'  />
+                                <Label >And</Label>
+                                <Input  onChange={event => this.state.window_end = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_end'  />
+                            </FormGroup>
+                            <Button onClick={this.handleSendData} className="btn btn-primary">Add Order</Button>
+                        </Form>
                     </Col>
                     <Col>
-                    <MapContainer center={[ 48, 11 ]} zoom={10} scrollWheelZoom={true} eventHandlers={{
+                    <MapContainer center={[ 55.66064229583371, 12.59125202894211 ]} zoom={10} scrollWheelZoom={true} eventHandlers={{
                         click: () => {
                         console.log('map clicked')
                         },
@@ -174,6 +190,11 @@ export class OrderPage extends Component {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                             <LocationMarker effectOn={this}/>
+                            <Marker position={[ this.state.lat, this.state.lng ]}>
+                                <Popup>
+                                   Location of pickup or delivery
+                                </Popup>
+                            </Marker>
                         </MapContainer>
                     </Col>
                 </Row>

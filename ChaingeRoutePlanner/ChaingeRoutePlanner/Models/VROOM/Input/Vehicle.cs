@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -30,7 +31,7 @@ namespace ChaingeRoutePlanner.Models.VROOM.Input
         /// The start coordinate of the vehicle.
         /// </summary>
         [JsonPropertyName("start")]
-        public Coordinate? Start { get; set; } = new Coordinate(12.531613140962866,55.70687145438041);
+        public Coordinate? Start { get; set; } = new Coordinate(12.530760169029238,55.7068346367018);
 
         /// <summary>
         /// The start index of the vehicle in custom matrices. Only needed if supplying custom matrix.

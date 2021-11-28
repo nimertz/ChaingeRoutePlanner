@@ -1,29 +1,18 @@
 import React, { Component, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline  } from 'react-leaflet'
-import { Button, Row, Col, Container, Form } from 'reactstrap';
+import { MapContainer, TileLayer, Marker, Popup,useMapEvents, Polyline as PL } from 'react-leaflet'
+import {Button, Row, Col, Container, Input} from 'reactstrap';
+import Polyline from '@mapbox/polyline'
 
 function LocationMarker(props) {
     const [position, setPosition] = useState(null)
     const map = useMapEvents({
         click(e) {
-            console.log('test', e)
-
-            props.effectOn.setState(state => {
-                state.lat = e.latlng.lat;
-                state.lng = e.latlng.lng;
-                return { ...state }
-            });
-            //map.locate()
+            console.log('Click', e)
         },
         moveend() {
             let center = map.getCenter();
             let zoom = map.getZoom();
-
-            props.effectOn.setState(state => {
-                state.lat = center.lat;
-                state.lng = center.lng;
-                return { ...state }
-            });
+            console.log('Zoom:', zoom, 'Center:', center)
         },
         locationfound(e) {
             setPosition(e.latlng)
@@ -40,136 +29,215 @@ function LocationMarker(props) {
 
 export class ListPage extends Component {
     static displayName = ListPage.name;
+
     constructor(props) {
         super(props);
         this.state = {
-            value: 'Howdy',
-            description: '',
-            pickup: false,
-            location: [0,0],
-            amount: '',
-            timeStart: '',
-            timeEnd: '',
-            timeSpan: '',
-            lat: 51.5054,
-            lng: -0.09,
-            bikeList: [1, 2, 3, 4, 5],
-            packageList: [1, 2, 3, 4, 5],
-            polyline: [
-                [51.505, -0.09],
-                [51.51, -0.1],
-                [51.51, -0.12],
-            ]
+            loading: true,
+            center: [55.66064229583371, 12.59125202894211],
+            
+            vehicles: [],
+            shipments: [],
+            selectedShipments: [],
+            selectedVehicles: [],
+            
+            routes: [],
         };
+    }
+
+    componentDidMount() {
+        this.populateLists();
+    }
     
-        this.handleSendData = this.handleSendData.bind(this);
-        this.handleCheckbox = this.handleCheckbox.bind(this);
-    }
-
-        handleClick = (e) => {
-            console.log(e.latlng)
-        }
-
-        handleSendData(event) {
-
-            const jsonToSend = {
-                "Pickup": this.state.checked,
-                "Amount": this.state.amount,
-                "Location": [this.state.lat, this.state.lng],
-                "Time": [this.state.timeStart, this.state.timeEnd],
-                "TimeSpan": this.state.timeSpan
-            };
-
-            alert('Data send');
-            console.log('stuff', jsonToSend);
-            console.log(this.postPackage(this.state.checked, this.state.amount, this.state.lng, this.state.lat, this.state.description))
-
-            //event.preventDefault();
-        }
-
-        handleCheckbox(input){
+    handleCheckVehicle(id) {
+        if (this.state.selectedVehicles.includes(id)) {
             this.setState({
-                checked: !this.state.checked
-              });
+                selectedVehicles: this.state.selectedVehicles.filter(v => v !== id)
+            })
+        } else {
+            this.setState({
+                selectedVehicles: [...this.state.selectedVehicles, id]
+            })
+        }
     }
 
-    postPackage = async (pickup, amount, long, lat, descrip) => {
-        const location = window.location.hostname;
-        console.log('123', this.state.lon)
-        const settings = {
+    handleCheckShipment(id) {
+        if (this.state.selectedShipments.includes(id)) {
+            this.setState({
+                selectedShipments: this.state.selectedShipments.filter(s => s !== id)
+            })
+        } else {
+            this.setState({
+                selectedShipments: [...this.state.selectedShipments, id]
+            })
+        }
+    }
+    
+    async populateShipmentData() {
+        const response = await fetch('Shipment/all');
+        const data = await response.json();
+        this.setState({ shipments: data});
+    }
+
+    async populateVehicleData() {
+        const response = await fetch('Vehicle/all');
+        const data = await response.json();
+        this.setState({ vehicles: data});
+    }
+
+    async postRoutePlan() {
+        const response = await fetch('RoutePlan', {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                // your expected POST request payload goes here
-                "pickup": pickup,
-                "description": descrip,
-                "amount": amount,
-                "location": [
-                    long,
-                    lat
-                ]
+                vehicleIds: this.state.selectedVehicles,
+                shipmentIds: this.state.selectedShipments,
             })
-
-        };
-        try {
-            const fetchResponse = await fetch(`Shipment`, settings);
-            const data = await fetchResponse.json();
-            return data;
-        } catch (e) {
-            return e;
+        });
+        const data = await response.json();
+        //handle badrequest response
+        if(data.code !== 0) {
+            alert(data.error);
+            return;
+        } 
+        
+        if(data.routes.length === 0) {
+            alert("No routes could be created using the provided shipments and vehicles\n" +
+                " Please verify that the shipments and vehicles are valid");
+            return;
         }
-
+        
+        
+        console.log(data);
+        //TODO make map adjust zoom & center based on route results
+        this.setState({
+            routes: data.routes,
+            center: [data.routes[0].steps[0].location[1], data.routes[0].steps[0].location[0]]
+        });
     }
 
-    handleClick = (e) => {
-        console.log(e.latlng)
+    populateLists() {
+        this.populateVehicleData();
+        this.populateShipmentData()
+        this.setState({ loading: false });
+    }
+    
+    static decodeGeometry(geometry) {
+        return Polyline.decode(geometry);
+    }
+    
+    isButtonDisabled() {
+        return this.state.selectedVehicles.length === 0 || this.state.selectedShipments.length === 0;
+    }
+    
+    static convertDuration(duration) {
+        //convert to hh:mm:ss
+        let hours = Math.floor(duration / 3600);
+        let minutes = Math.floor((duration - (hours * 3600)) / 60);
+        let seconds = duration - (hours * 3600) - (minutes * 60);
+        return `${hours}h ${minutes}m ${seconds}s`;
+    }
+    
+    static generateRandomPolygonColor() {
+        let colors = ["red" , "blue", "green", "purple","brown"];
+        return colors[Math.floor(Math.random() * colors.length)];
     }
 
-
-
-  
-
-    render() {
+     renderVehicleList(vehicles) {
         return (
-            <Container>
-                <Row>
-                    <Col>
-                        <div className="list-group">
-                            <button href="#" className="list-group-item list-group-item-action active" aria-current="true">
-                                The current link item
-                            </button>
-                            <button href="#" className="list-group-item list-group-item-action">A second link item</button>
-                            <button href="#" className="list-group-item list-group-item-action">A third link item</button>
-                            <button href="#" className="list-group-item list-group-item-action">A fourth link item</button>
-                            <button href="#" className="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">A disabled link item</button>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="list-group">
-                            {
-                                this.state.bikeList.map((object, i) => <button href="#" className="list-group-item list-group-item-action" key={object + i}> {object} </button>)
-                            }
-                        </div>
-                    </Col>
-                    <Col xs={6}>
-                    <MapContainer center={[ 48, 11 ]} zoom={10} scrollWheelZoom={true} eventHandlers={{
+            <ul className="list-group">
+                <h5>Vehicles</h5>
+                {vehicles.map(vehicle =>
+                    <li className="list-group-item" key={vehicle.id}>
+                        <Input onChange={() =>this.handleCheckVehicle(vehicle.id) } className="form-check-input me-1" type="checkbox" value="Vehicle" aria-label="..."/>
+                        {vehicle.id}: {vehicle.description} - {vehicle.capacity} kg
+                    </li>
+                )}
+            </ul>
+        );
+    }
+    
+     renderShipmentList(shipments) {
+        return (
+            <ul className="list-group">
+                <h5>Shipments</h5>
+                {shipments.map(shipment =>
+                    <li className="list-group-item" key={shipment.id}>
+                        <Input onChange={() =>this.handleCheckShipment(shipment.id) } className="form-check-input me-1" type="checkbox" value="Shipment" aria-label="..."/>
+                        {shipment.id}: {shipment.description}
+                    </li>
+                )}
+            </ul>
+        );
+    }
+    renderContents(vehicles, shipments) {
+        let vehicleContent =  this.renderVehicleList(vehicles);
+        let shipmentContent = this.renderShipmentList(shipments);
+
+        return (
+            <Row>
+                <Col>
+                    {vehicleContent}
+                </Col>
+                <Col>
+                    {shipmentContent}
+                    <div>
+                        <Button onClick={() => this.postRoutePlan()} disabled={this.isButtonDisabled()}
+                                color="primary">
+                            Create route plan
+                        </Button>
+                    </div>
+                </Col>
+                <Col xs={6}>
+                    <MapContainer center={this.state.center} zoom={15} scrollWheelZoom={true} eventHandlers={{
                         click: () => {
-                        console.log('map clicked')
+                            console.log('map clicked')
                         },
                     }}>
-                            <TileLayer
-                                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-                            <LocationMarker effectOn={this} />
-                            <Polyline pathOptions={{ color: 'red' }} positions={this.state.polyline} />
-                        </MapContainer>
-                    </Col>
-                </Row>
+                        <TileLayer
+                            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                       {this.state.routes.map(route =>
+                            <PL  positions={ListPage.decodeGeometry(route.geometry)} color={ListPage.generateRandomPolygonColor()} />
+                        )}
+                        {this.state.routes.map(route =>
+                            route.steps.map( step =>
+                                <Marker position={[step.location[1], step.location[0]]}>
+                                    <Popup>
+                                        {step.description}<br/>
+                                        <b>Vehicle:</b> {route.vehicle}<br/>
+                                        <b>Type:</b> {step.type}<br/>
+                                        <b>Travel time:</b> {ListPage.convertDuration(step.duration)}<br/>
+                                        <b>Vehicle Load:</b> {step.load}<br/>
+                                    </Popup>
+                                </Marker>
+                            ))}
+                        <LocationMarker effectOn={this}/>
+                    </MapContainer>
+                </Col>
+            </Row>
+        );
+    }
+
+    render() {
+        let contents = this.state.loading
+            ? <p><em>Loading...</em></p>
+            : this.renderContents(this.state.vehicles, this.state.shipments);
+            
+        return (
+            <Container>
+                    {contents}
             </Container>
         );
     }
+
+    
+    
+    
+     
+    
 }

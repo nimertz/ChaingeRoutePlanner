@@ -78,9 +78,10 @@ namespace ChaingeRoutePlanner.Controllers
             }
             else
             {
-                if (response.Error != null) _logger.LogError($"Error code {response.Error} returned from Vroom API");
-                
-                return BadRequest(response.Error);
+                if(response.Error != null)
+                    _logger.LogError($"Error code {response.Error} returned from Vroom API");
+                else
+                    _logger.LogInformation($"Error code {response.Code} returned from Vroom API");
             }
 
             return Ok(response);

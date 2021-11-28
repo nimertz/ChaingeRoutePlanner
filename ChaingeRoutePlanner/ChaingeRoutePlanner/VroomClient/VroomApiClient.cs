@@ -54,12 +54,6 @@ namespace ChaingeRoutePlanner.VroomClient
             string content = await response.Content.ReadAsStringAsync();
             var output = JsonSerializer.Deserialize<VroomOutput>(content, _serializerOptions);
             
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                throw new Exception($"Server responded with status code {response.StatusCode}. Content: " +
-                                    JsonSerializer.Serialize(output, _serializerOptions));
-            }
-
             return output;
         }
 
