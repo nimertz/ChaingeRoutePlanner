@@ -46,7 +46,7 @@ export class BikePage extends Component {
         console.log("data", data);
     }
 
-    postBike = async (description, capa) => {
+    postBike = async (description, capacity) => {
         const settings = {
             method: 'POST',
             headers: {
@@ -55,7 +55,8 @@ export class BikePage extends Component {
             },
             body: JSON.stringify({
                 "description": description,
-                "capacity": capa
+                "capacity": capacity,
+                //"time_window": [28800,57600]
             })
 
         };

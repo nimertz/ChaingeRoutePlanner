@@ -98,6 +98,19 @@ export class ListPage extends Component {
             })
         });
         const data = await response.json();
+        //handle badrequest response
+        if(data.code !== 0) {
+            alert(data.error);
+            return;
+        } 
+        
+        if(data.routes.length === 0) {
+            alert("No routes could be created using the provided shipments and vehicles\n" +
+                " Please verify that the shipments and vehicles are valid");
+            return;
+        }
+        
+        
         console.log(data);
         //TODO make map adjust zoom & center based on route results
         this.setState({
@@ -129,7 +142,7 @@ export class ListPage extends Component {
     }
     
     static generateRandomPolygonColor() {
-        let colors = ["red" , "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "grey"];
+        let colors = ["red" , "blue", "green", "purple","brown"];
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
