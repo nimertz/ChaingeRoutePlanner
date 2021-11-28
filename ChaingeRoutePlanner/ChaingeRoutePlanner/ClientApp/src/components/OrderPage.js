@@ -1,6 +1,6 @@
 import React, {Component, useState} from 'react';
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from 'react-leaflet'
-import {Button, Col, Container, Row} from 'reactstrap';
+import {Button, Col, Container, Input, Label, Row, Form, FormGroup} from 'reactstrap';
 
 function LocationMarker(props) {
     const [position, setPosition] = useState(null)
@@ -149,42 +149,35 @@ export class OrderPage extends Component {
             <Container>
                 <Row>
                     <Col>
-                        <h1>Order Shipment</h1>
-                            <div className="form-group">
-                                <Col>
-                                    <label >Pickup</label>
-                                </Col>
-                                <Col>
-                                    <input  onChange={event => this.handleCheckbox(event.target.value)} checked={this.state.checked} type="checkbox" value="Pickup" />Pickup
-                                    <br/>
-                                    <input onChange={event => this.handleCheckbox(event.target.value)} checked={!this.state.checked}  type="checkbox" value="Delivery" />Delivery
-                                </Col>
-                        </div>
-                        <div className="form-group">
-                            <label >Description</label>
-                            <input onChange={event => this.state.description = event.target.value} type="text" name='Name' />
-                        </div>
-                            <div className="form-group">
-                                <label >Amount</label>
-                                <input onChange={event => this.state.amount = event.target.value} type="number" name='amount'  />
-                            </div>
-                            <div className="form-group">
-                                <label >Location</label>
-                                <input value={this.state.lat} className="form-control" id="lat" disabled={true}/>
-                                <input value={this.state.lng} className="form-control" id="lng" disabled={true}/>
-                            </div>
-                            <div className="form-group">
-                                <label >Time - Start</label>
-                                <input  onChange={event => this.state.window_start = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_start'  />
-                                <label >Time - end</label>
-                                <input  onChange={event => this.state.window_end = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_end'  />
-                            </div>
-                            <div className="form-group">
-                                <label >Timespan</label>
-                                <input onChange={event => this.state.timeSpan = event.target.value} type="number" name='date_of_birth'  />
-                            </div>
-                            
+                        <Form>
+                            <h1>Order Shipment</h1>
+                            <FormGroup row>
+                                    <Label>Shipment type:</Label>
+                                    <Input onChange={event => this.handleCheckbox(event.target.value)} checked={!this.state.checked}  type="checkbox" value="Delivery" />Delivery
+                                    <Input  onChange={event => this.handleCheckbox(event.target.value)} checked={this.state.checked} type="checkbox" value="Pickup" />Pickup
+                            </FormGroup>
+                            <FormGroup>
+                                <Label >Description</Label>
+                                <Input onChange={event => this.state.description = event.target.value} type="text" name='Name' />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label >Weight</Label>
+                                <Input onChange={event => this.state.amount = event.target.value} type="number" name='amount'  />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label >Location</Label>
+                                <Input value={this.state.lat} className="form-control" id="lat" disabled={true}/>
+                                <Input value={this.state.lng} className="form-control" id="lng" disabled={true}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <h4>Time Window</h4>
+                                <Label >Between :</Label>
+                                <Input  onChange={event => this.state.window_start = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_start'  />
+                                <Label >And</Label>
+                                <Input  onChange={event => this.state.window_end = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_end'  />
+                            </FormGroup>
                             <Button onClick={this.handleSendData} className="btn btn-primary">Add Order</Button>
+                        </Form>
                     </Col>
                     <Col>
                     <MapContainer center={[ 55.66064229583371, 12.59125202894211 ]} zoom={10} scrollWheelZoom={true} eventHandlers={{

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import { Button, Row, Col, Container, Form } from 'reactstrap';
+import {Row, Col, Container, Input, Label, Button, Form, FormGroup} from 'reactstrap';
 
 export class BikePage extends Component {
     static displayName = BikePage.name;
@@ -42,14 +41,12 @@ export class BikePage extends Component {
     }
 
     async populateWeatherData() {
-        console.log('test');
         const response = await fetch('Vehicle/all');
         const data = await response.json();
-        console.log(data);
+        console.log("data", data);
     }
 
     postBike = async (description, capa) => {
-        const location = window.location.hostname;
         const settings = {
             method: 'POST',
             headers: {
@@ -57,7 +54,6 @@ export class BikePage extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                // your expected POST request payload goes here
                 "description": description,
                 "capacity": capa
             })
@@ -78,37 +74,39 @@ export class BikePage extends Component {
         return (
             <Container>
                 <Row>
-                            <div className="form-group">
-                                <Col>
-                                    <label>Description</label>
-                                </Col>
-                                <Col>
-                                    <input onChange={event => this.state.bikeDescription = event.target.value} type="text" className="form-control" id="bikeDescriptionID" aria-describedby="emailHelp" placeholder="Bike Description" />
-                                </Col>
-                            </div>
-                            <div className="form-group">
-                                <label>Capacity</label>
-                                <div>
-                            <input onChange={event => this.state.bikeCapacity = event.target.value} type="number" name='Capacity' id="" placeholder="Bike Description" />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label>Active Timeroom</label>
-                                <label>Date</label>
-                                  <input type="date" name='date_of_delivery'  onChange={event => this.state.data = event.target.value}/>
-                            </div>
-                            <div className="form-group">
-                                <label>Active Timeroom</label>
-                                <label>Time - Start</label>
-                                <input type="time" name='delivery_clock_start'  onChange={event => this.state.timeStart = event.target.value}/>
-                                <label>Time - end</label>
-                                <input type="time" name='delivery_clock_end'  onChange={event => this.state.timeEnd = event.target.value}/>
-                            </div>
-                            <div className="form-group">
-                                <label >Max Tasks</label>
-                                 <input onChange={event => this.state.maxTasks = event.target.value} type="number" name='date_of_birth'  />
-                            </div>
-                            <button onClick={this.handleSendData} className="btn btn-primary">Add Bike</button>
+                    <Form>
+                    <FormGroup>
+                        <Col>
+                            <Label>Description</Label>
+                        </Col>
+                        <Col>
+                            <Input onChange={event => this.state.bikeDescription = event.target.value} type="text" className="form-control" id="bikeDescriptionID" aria-describedby="emailHelp" placeholder="Description" />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Capacity</Label>
+                        <div>
+                    <Input onChange={event => this.state.bikeCapacity = event.target.value} type="number" name='Capacity' id="" placeholder="Bike capacity (kg)" />
+                        </div>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Active Timeroom</Label>
+                        <Label>Date</Label>
+                          <Input type="date" name='date_of_delivery'  onChange={event => this.state.data = event.target.value}/>
+                    </FormGroup>
+                        <FormGroup>
+                        <Label>Active Timeroom</Label>
+                        <Label>Time - Start</Label>
+                        <Input type="time" name='delivery_clock_start'  onChange={event => this.state.timeStart = event.target.value}/>
+                        <Label>Time - end</Label>
+                        <Input type="time" name='delivery_clock_end'  onChange={event => this.state.timeEnd = event.target.value}/>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label >Max Tasks</Label>
+                        <Input onChange={event => this.state.maxTasks = event.target.value} type="number" name='date_of_birth'  />
+                    </FormGroup>
+                    <Button onClick={this.handleSendData} className="btn btn-primary">Add Bike</Button>
+                    </Form>
                 </Row>
             </Container>
         );

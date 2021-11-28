@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup,useMapEvents, Polyline as PL } from 'react-leaflet'
-import { Button, Row, Col, Container} from 'reactstrap';
+import {Button, Row, Col, Container, Input} from 'reactstrap';
 import Polyline from '@mapbox/polyline'
 
 function LocationMarker(props) {
@@ -139,7 +139,7 @@ export class ListPage extends Component {
                 <h5>Vehicles</h5>
                 {vehicles.map(vehicle =>
                     <li className="list-group-item" key={vehicle.id}>
-                        <input onChange={() =>this.handleCheckVehicle(vehicle.id) } className="form-check-input me-1" type="checkbox" value="Vehicle" aria-label="..."/>
+                        <Input onChange={() =>this.handleCheckVehicle(vehicle.id) } className="form-check-input me-1" type="checkbox" value="Vehicle" aria-label="..."/>
                         {vehicle.id}: {vehicle.description} - {vehicle.capacity} kg
                     </li>
                 )}
@@ -153,7 +153,7 @@ export class ListPage extends Component {
                 <h5>Shipments</h5>
                 {shipments.map(shipment =>
                     <li className="list-group-item" key={shipment.id}>
-                        <input onChange={() =>this.handleCheckShipment(shipment.id) } className="form-check-input me-1" type="checkbox" value="Shipment" aria-label="..."/>
+                        <Input onChange={() =>this.handleCheckShipment(shipment.id) } className="form-check-input me-1" type="checkbox" value="Shipment" aria-label="..."/>
                         {shipment.id}: {shipment.description}
                     </li>
                 )}
