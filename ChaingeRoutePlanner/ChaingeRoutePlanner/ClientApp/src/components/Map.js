@@ -36,7 +36,7 @@ export class Map extends Component {
 
     static generateRandomPolygonColor() {
         let colors = ["red", "blue", "green", "purple", "brown"];
-        return colors[Math.floor(Math.random() * colors.length)];
+        return "green";
     }
 
     static convertDuration(duration) {

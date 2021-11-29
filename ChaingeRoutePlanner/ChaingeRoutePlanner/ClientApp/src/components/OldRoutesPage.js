@@ -1,18 +1,15 @@
 ﻿import React, { Component } from 'react';
 import { Row, Col, Container, Input, Label, Button, Form, FormGroup } from 'reactstrap';
+import { Map } from './Map';
 
 export class OldRoutesPage extends Component {
     static displayName = OldRoutesPage.name;
     constructor(props) {
         super(props);
         this.state = {
-            value: 'Howdy',
-            bikeDescription: '',
-            bikeCapacity: '',
-            timeStart: '',
-            timeEnd: '',
-            maxTasks: '',
-            date: ''
+            routes: [],
+            selectedRoutes: [],
+            center: [55.66064229583371, 12.59125202894211]
         };
 
         this.getData = this.getData.bind(this);
@@ -22,55 +19,51 @@ export class OldRoutesPage extends Component {
         console.log(e.latlng)
     }
 
+    handleRouteSelect(route) {
+        this.setState({ selectedRoutes: route });
+    }
+
     async getData(event) {
 
         const response = await fetch('RoutePlan/all');
         const data = await response.json();
         console.log("data", data);
-
+        this.setState({ routes: data });
+        console.log(this.state.routes);
         //event.preventDefault();
     }
 
+    routesRenderList(routes) {
+        return (
+            <ul className="list-group">
+                <h5>Routes</h5>
+                {routes.map((routes, index) =>
+                    <li className="list-group-item" key={index + 'routeID'}>
+                        <Input onChange={() => this.handleRouteSelect(routes.routes)} className="form-check-input me-1 changie_checkBox" type="checkbox" value="Vehicle" aria-label="..." />
+                        {routes.routes[0].distance + " / " + routes.routes[0].duration}
+                    </li>
+                )}
+            </ul>
+        );
+    }
+
+    componentDidMount() {
+        this.getData();
+    }
 
 
     render() {
+        let vehicleContent = this.routesRenderList(this.state.routes);
+
         return (
             <Container>
                 <Row>
-                    <Form>
-                        <FormGroup>
-                            <Col>
-                                <Label>Description</Label>
-                            </Col>
-                            <Col>
-                                <Input onChange={event => this.state.bikeDescription = event.target.value} type="text" className="form-control" id="bikeDescriptionID" aria-describedby="emailHelp" placeholder="Description" />
-                            </Col>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label className="">Capacity</Label>
-                            <div>
-                                <Input onChange={event => this.state.bikeCapacity = event.target.value} type="number" name='Capacity' id="" placeholder="Bike capacity (kg)" />
-                            </div>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Active Timeroom</Label>
-                            <Label>Date</Label>
-                            <Input type="date" name='date_of_delivery' onChange={event => this.state.data = event.target.value} />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Active Timeroom</Label>
-                            <Label>Time - Start</Label>
-                            <Input type="time" name='delivery_clock_start' onChange={event => this.state.timeStart = event.target.value} />
-                            <Label>Time - end</Label>
-                            <Input type="time" name='delivery_clock_end' onChange={event => this.state.timeEnd = event.target.value} />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label >Max Tasks</Label>
-                            <Input onChange={event => this.state.maxTasks = event.target.value} type="number" name='date_of_birth' />
-                        </FormGroup>
-                        <br />
-                        <Button onClick={this.getData} className="btn chainge-color">Add Bike</Button>
-                    </Form>
+                    <Col>
+                        {vehicleContent}
+                    </Col>
+                    <Col>
+                        <Map center={this.state.center} routes={this.state.selectedRoutes} height={"65vh"} />
+                    </Col>
                 </Row>
             </Container>
         );

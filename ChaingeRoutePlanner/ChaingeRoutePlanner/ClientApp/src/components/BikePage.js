@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Row, Col, Container, Input, Label, Button, Form, FormGroup} from 'reactstrap';
+import { Row, Col, Container, Input, Label, Button, Form, FormGroup } from 'reactstrap';
+import bikeImg from "../assets/Bike.PNG"
 
 export class BikePage extends Component {
     static displayName = BikePage.name;
@@ -33,9 +34,7 @@ export class BikePage extends Component {
                 "MaxTasks": this.state.maxTasks
             };
 
-            console.log('stuff', jsonToSend);
             this.populateWeatherData();
-            console.log('getDvic', this.postBike(this.state.bikeDescription, this.state.bikeCapacity));
 
             //event.preventDefault();
     }
@@ -63,6 +62,9 @@ export class BikePage extends Component {
         try {
             const fetchResponse = await fetch(`Vehicle`, settings);
             const data = await fetchResponse.json();
+            //this.setState({ bikeDescription: data });
+            document.getElementById("bikeDescriptionID").reset();
+
             return data;
         } catch (e) {
             return e;
@@ -75,7 +77,9 @@ export class BikePage extends Component {
         return (
             <Container>
                 <Row>
+                    <Col>
                     <Form>
+                      
                     <FormGroup>
                         <Col>
                             <Label>Description</Label>
@@ -108,8 +112,11 @@ export class BikePage extends Component {
                     </FormGroup>
                     <br/>
                     <Button onClick={this.handleSendData} className="btn chainge-color">Add Bike</Button>
-                    </Form>
+                        </Form>
+                    </Col>
+              
                 </Row>
+                    
             </Container>
         );
     }

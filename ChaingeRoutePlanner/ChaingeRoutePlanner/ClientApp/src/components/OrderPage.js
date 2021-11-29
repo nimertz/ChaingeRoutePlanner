@@ -148,7 +148,7 @@ export class OrderPage extends Component {
         return (
             <Container>
                 <Row>
-                    <Col>
+                    <Row>
                         <Form>
                             <h1>Order Shipment</h1>
                             <FormGroup row>
@@ -174,39 +174,40 @@ export class OrderPage extends Component {
                                     </Col>
                             </FormGroup>
                             <FormGroup>
+                                <h4>Time Window</h4>
+                                <Label >Between :</Label>
+                                <Input onChange={event => this.state.window_start = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_start' />
+                                <Label >And</Label>
+                                <Input onChange={event => this.state.window_end = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_end' />
+                            </FormGroup>
+                            <FormGroup>
                                 <Label >Location</Label>
                                 <Input value={this.state.lat} className="form-control" id="lat" disabled={true}/>
                                 <Input value={this.state.lng} className="form-control" id="lng" disabled={true}/>
                             </FormGroup>
-                            <FormGroup>
-                                <h4>Time Window</h4>
-                                <Label >Between :</Label>
-                                <Input  onChange={event => this.state.window_start = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_start'  />
-                                <Label >And</Label>
-                                <Input  onChange={event => this.state.window_end = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_end'  />
-                            </FormGroup>
+                            
+                            <MapContainer center={[55.66064229583371, 12.59125202894211]} zoom={10} scrollWheelZoom={true} style={{ height: "75vh" }} eventHandlers={{
+                                click: () => {
+                                    console.log('map clicked')
+                                },
+                            }}>
+                                <TileLayer
+                                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                />
+                                <LocationMarker effectOn={this} />
+                                <Marker position={[this.state.lat, this.state.lng]}>
+                                    <Popup>
+                                        Location of pickup or delivery
+                                    </Popup>
+                                </Marker>
+                            </MapContainer>
                             <br/>
                             <Button onClick={this.handleSendData} className="btn chainge-color">Add Order</Button>
                         </Form>
-                    </Col>
-                    <Col>
-                        <MapContainer center={[55.66064229583371, 12.59125202894211]} zoom={10} scrollWheelZoom={true} style={{ height: "75vh" }} eventHandlers={{
-                        click: () => {
-                        console.log('map clicked')
-                        },
-                    }}>
-                            <TileLayer
-                                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-                            <LocationMarker effectOn={this}/>
-                            <Marker position={[ this.state.lat, this.state.lng ]}>
-                                <Popup>
-                                   Location of pickup or delivery
-                                </Popup>
-                            </Marker>
-                        </MapContainer>
-                    </Col>
+                    </Row>
+                    <Row>
+                    </Row>
                 </Row>
             </Container>
         );
