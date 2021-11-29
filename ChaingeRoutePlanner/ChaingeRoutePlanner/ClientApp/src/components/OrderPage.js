@@ -73,7 +73,7 @@ export class OrderPage extends Component {
         //event.preventDefault();
     }
 
-    handleCheckbox(input){
+    handleCheckbox(input) {
         this.setState({
             checked: !this.state.checked
           });
@@ -152,17 +152,26 @@ export class OrderPage extends Component {
                         <Form>
                             <h1>Order Shipment</h1>
                             <FormGroup row>
-                                    <Label>Shipment type:</Label>
-                                    <Input onChange={event => this.handleCheckbox(event.target.value)} checked={!this.state.checked}  type="checkbox" value="Delivery" />Delivery
-                                    <Input  onChange={event => this.handleCheckbox(event.target.value)} checked={this.state.checked} type="checkbox" value="Pickup" />Pickup
+                                <Label>Shipment type:</Label>
+                                <Col>
+                                    <Input onClick={event => this.handleCheckbox(true)} type="button" value="Pickup" className={this.state.checked ? "chainge-color" : ""} />
+                                </Col>
+                                <Col xs={6}>
+                                    <Input onClick={event => this.handleCheckbox(false)} type="button" value="Delivery" className={!this.state.checked ? "chainge-color" : ""}/>
+                                </Col>
                             </FormGroup>
-                            <FormGroup>
+                            <FormGroup >
                                 <Label >Description</Label>
-                                <Input onChange={event => this.state.description = event.target.value} type="text" name='Name' />
+                                <Input onChange={event => this.state.description = event.target.value} type="textarea" name='Name' />
                             </FormGroup>
-                            <FormGroup>
+                            <FormGroup row>
                                 <Label >Weight</Label>
-                                <Input onChange={event => this.state.amount = event.target.value} type="number" name='amount'  />
+                                    <Col xs={11}>
+                                        <Input onChange={event => this.state.amount = event.target.value} type="number" name='amount' />
+                                    </Col>
+                                    <Col>
+                                        <label>Kg</label>
+                                    </Col>
                             </FormGroup>
                             <FormGroup>
                                 <Label >Location</Label>
@@ -176,11 +185,12 @@ export class OrderPage extends Component {
                                 <Label >And</Label>
                                 <Input  onChange={event => this.state.window_end = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_end'  />
                             </FormGroup>
-                            <Button onClick={this.handleSendData} className="btn btn-primary">Add Order</Button>
+                            <br/>
+                            <Button onClick={this.handleSendData} className="btn chainge-color">Add Order</Button>
                         </Form>
                     </Col>
                     <Col>
-                    <MapContainer center={[ 55.66064229583371, 12.59125202894211 ]} zoom={10} scrollWheelZoom={true} eventHandlers={{
+                        <MapContainer center={[55.66064229583371, 12.59125202894211]} zoom={10} scrollWheelZoom={true} style={{ height: "75vh" }} eventHandlers={{
                         click: () => {
                         console.log('map clicked')
                         },

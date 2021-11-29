@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import logo from "../assets/ChaingeLogo.png"
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -24,23 +25,23 @@ export class NavMenu extends Component {
   render () {
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+            <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
-            <NavbarBrand tag={Link} to="/">ChaingeRoutePlanner</NavbarBrand>
+                    <NavbarBrand tag={Link} to="/"><img src={logo} style={{ width: 100, marginTop: -7 }} /></NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/listPage">List</NavLink>
+                                <NavLink tag={Link} className="chainge-text" to="/listPage">List</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/orderPage">Order Page</NavLink>
+                  <NavLink tag={Link} className="chainge-text" to="/orderPage">Order Page</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/bikePage">Bike Page</NavLink>
+                  <NavLink tag={Link} className="chainge-text" to="/bikePage">Bike Page</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/map">Map</NavLink>
+                  <NavLink tag={Link} className="chainge-text" to="/oldroute">Old Route</NavLink>
                 </NavItem>
               </ul>
             </Collapse>

@@ -2,6 +2,7 @@ import React, { Component, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup,useMapEvents, Polyline as PL } from 'react-leaflet'
 import {Button, Row, Col, Container, Input} from 'reactstrap';
 import Polyline from '@mapbox/polyline'
+import { Map } from './Map';
 
 function LocationMarker(props) {
     const [position, setPosition] = useState(null)
@@ -152,7 +153,7 @@ export class ListPage extends Component {
                 <h5>Vehicles</h5>
                 {vehicles.map(vehicle =>
                     <li className="list-group-item" key={vehicle.id}>
-                        <Input onChange={() =>this.handleCheckVehicle(vehicle.id) } className="form-check-input me-1" type="checkbox" value="Vehicle" aria-label="..."/>
+                        <Input onChange={() => this.handleCheckVehicle(vehicle.id)} className="form-check-input me-1 changie_checkBox" type="checkbox" value="Vehicle" aria-label="..."/>
                         {vehicle.id}: {vehicle.description} - {vehicle.capacity} kg
                     </li>
                 )}
@@ -166,7 +167,7 @@ export class ListPage extends Component {
                 <h5>Shipments</h5>
                 {shipments.map(shipment =>
                     <li className="list-group-item" key={shipment.id}>
-                        <Input onChange={() =>this.handleCheckShipment(shipment.id) } className="form-check-input me-1" type="checkbox" value="Shipment" aria-label="..."/>
+                        <Input onChange={() => this.handleCheckShipment(shipment.id)} className="form-check-input me-1 changie_checkBox" type="checkbox" value="Shipment" aria-label="..." />
                         {shipment.id}: {shipment.description}
                     </li>
                 )}
@@ -178,21 +179,18 @@ export class ListPage extends Component {
         let shipmentContent = this.renderShipmentList(shipments);
 
         return (
+            <div>
             <Row>
                 <Col>
                     {vehicleContent}
                 </Col>
                 <Col>
                     {shipmentContent}
-                    <div>
-                        <Button onClick={() => this.postRoutePlan()} disabled={this.isButtonDisabled()}
-                                color="primary">
-                            Create route plan
-                        </Button>
-                    </div>
                 </Col>
                 <Col xs={6}>
-                    <MapContainer center={this.state.center} zoom={15} scrollWheelZoom={true} eventHandlers={{
+                        <Map center={this.state.center} routes={this.state.routes} height={"65vh"}/>
+                    {/* 
+                        <MapContainer center={this.state.center} zoom={15} scrollWheelZoom={true} eventHandlers={{
                         click: () => {
                             console.log('map clicked')
                         },
@@ -201,25 +199,34 @@ export class ListPage extends Component {
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                       {this.state.routes.map(route =>
-                            <PL  positions={ListPage.decodeGeometry(route.geometry)} color={ListPage.generateRandomPolygonColor()} />
+                        {this.state.routes.map(route =>
+                            <PL positions={ListPage.decodeGeometry(route.geometry)} color={ListPage.generateRandomPolygonColor()} />
                         )}
                         {this.state.routes.map(route =>
-                            route.steps.map( step =>
+                            route.steps.map(step =>
                                 <Marker position={[step.location[1], step.location[0]]}>
                                     <Popup>
-                                        {step.description}<br/>
-                                        <b>Vehicle:</b> {route.vehicle}<br/>
-                                        <b>Type:</b> {step.type}<br/>
-                                        <b>Travel time:</b> {ListPage.convertDuration(step.duration)}<br/>
-                                        <b>Vehicle Load:</b> {step.load}<br/>
+                                        {step.description}<br />
+                                        <b>Vehicle:</b> {route.vehicle}<br />
+                                        <b>Type:</b> {step.type}<br />
+                                        <b>Travel time:</b> {ListPage.convertDuration(step.duration)}<br />
+                                        <b>Vehicle Load:</b> {step.load}<br />
                                     </Popup>
                                 </Marker>
                             ))}
-                        <LocationMarker effectOn={this}/>
+                        <LocationMarker effectOn={this} />
                     </MapContainer>
+                    */}
                 </Col>
-            </Row>
+                </Row>
+                <br/>
+            <Row>
+                <Button onClick={() => this.postRoutePlan()} className="chainge-color" disabled={this.isButtonDisabled()}
+                        >
+                        Create route plan
+                </Button>
+                </Row>
+                </div>
         );
     }
 

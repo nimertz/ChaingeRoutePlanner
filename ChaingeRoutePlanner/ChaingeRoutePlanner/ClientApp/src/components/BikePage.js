@@ -81,11 +81,11 @@ export class BikePage extends Component {
                             <Label>Description</Label>
                         </Col>
                         <Col>
-                            <Input onChange={event => this.state.bikeDescription = event.target.value} type="text" className="form-control" id="bikeDescriptionID" aria-describedby="emailHelp" placeholder="Description" />
+                                <Input onChange={event => this.state.bikeDescription = event.target.value} type="text" className="form-control" id="bikeDescriptionID" aria-describedby="emailHelp" placeholder="Description" />
                         </Col>
                     </FormGroup>
-                    <FormGroup>
-                        <Label>Capacity</Label>
+                        <FormGroup>
+                            <Label className="">Capacity</Label>
                         <div>
                     <Input onChange={event => this.state.bikeCapacity = event.target.value} type="number" name='Capacity' id="" placeholder="Bike capacity (kg)" />
                         </div>
@@ -106,7 +106,8 @@ export class BikePage extends Component {
                         <Label >Max Tasks</Label>
                         <Input onChange={event => this.state.maxTasks = event.target.value} type="number" name='date_of_birth'  />
                     </FormGroup>
-                    <Button onClick={this.handleSendData} className="btn btn-primary">Add Bike</Button>
+                    <br/>
+                    <Button onClick={this.handleSendData} className="btn chainge-color">Add Bike</Button>
                     </Form>
                 </Row>
             </Container>
