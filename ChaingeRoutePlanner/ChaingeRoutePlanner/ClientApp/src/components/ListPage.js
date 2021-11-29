@@ -35,7 +35,7 @@ export class ListPage extends Component {
         super(props);
         this.state = {
             loading: true,
-            center: [55.66064229583371, 12.59125202894211],
+            center: [55.7068346367018,12.530760169029238],
             
             vehicles: [],
             shipments: [],
@@ -169,6 +169,8 @@ export class ListPage extends Component {
                     <li className="list-group-item" key={shipment.id}>
                         <Input onChange={() => this.handleCheckShipment(shipment.id)} className="form-check-input me-1 changie_checkBox" type="checkbox" value="Shipment" aria-label="..." />
                         {shipment.id}: {shipment.description}
+                        <br/>
+                        {shipment.amount} kg
                     </li>
                 )}
             </ul>
@@ -241,10 +243,4 @@ export class ListPage extends Component {
             </Container>
         );
     }
-
-    
-    
-    
-     
-    
 }

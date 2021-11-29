@@ -47,8 +47,8 @@ export class OrderPage extends Component {
             window_start: 0,
             window_end: 0,
             timeSpan: '',
-            lat: 35.76218444303944,
-            lng: 51.33657932281495,
+            lat: 55.7068346367018,
+            lng: 12.530760169029238,
             checked: false
         };
     

@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline as PL } from 'react-leaflet'
+import {MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline as PL, Tooltip} from 'react-leaflet'
 import Polyline from '@mapbox/polyline'
 
 function LocationMarker(props) {
@@ -46,6 +46,11 @@ export class Map extends Component {
         let seconds = duration - (hours * 3600) - (minutes * 60);
         return `${hours}h ${minutes}m ${seconds}s`;
     }
+    
+    static convertDistance(distance) {
+        //convert feet to kilometers
+        return (distance * 0.0003048).toFixed(2);
+    }
 
   render () {
       return (
@@ -58,20 +63,28 @@ export class Map extends Component {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {this.props.routes.map(route =>
-                <PL positions={Map.decodeGeometry(route.geometry)} color={Map.generateRandomPolygonColor()} />
+            {this.props.routes.map((route,index) =>
+                <PL positions={Map.decodeGeometry(route.geometry)} color={Map.generateRandomPolygonColor()}>
+                    <Tooltip sticky>
+                        {index +1}<br/>
+                        Route distance: {Map.convertDistance(route.distance)} km<br/>
+                        Route duration: {Map.convertDuration(route.duration)}<br/>
+                    </Tooltip>
+                </PL>
             )}
             {this.props.routes.map(route =>
-                route.steps.map(step =>
-                    <Marker position={[step.location[1], step.location[0]]}>
-                        <Popup>
-                            {step.description}<br />
-                            <b>Vehicle:</b> {route.vehicle}<br />
-                            <b>Type:</b> {step.type}<br />
-                            <b>Travel time:</b> {Map.convertDuration(step.duration)}<br />
-                            <b>Vehicle Load:</b> {step.load}<br />
-                        </Popup>
-                    </Marker>
+                route.steps.map(step => { 
+                    if(step.type !== "start" && step.type !== "end") 
+                    return <Marker position={[step.location[1], step.location[0]]}>
+                    <Popup>
+                        {step.description}<br />
+                        <b>Vehicle:</b> {route.vehicle}<br />
+                        <b>Type:</b> {step.type}<br />
+                        <b>Travel time:</b> {Map.convertDuration(step.duration)}<br />
+                        <b>Vehicle Load After:</b> {step.load}<br />
+                    </Popup>
+                </Marker>
+                }
                 ))}
             <LocationMarker effectOn={this} />
         </MapContainer>
