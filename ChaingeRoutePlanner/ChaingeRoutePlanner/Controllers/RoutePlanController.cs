@@ -107,7 +107,7 @@ namespace ChaingeRoutePlanner.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<VroomOutput>>> GetAllRoutePlans()
         {
-            var response = await _routePlanRepository.GetAllVroomOutputsAsync();
+            var response =  _routePlanRepository.GetAllVroomOutputsAsync().Result.Value;
 
             if (response == null)
             {

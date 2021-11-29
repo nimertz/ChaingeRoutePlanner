@@ -34,9 +34,14 @@ namespace ChaingeRoutePlanner.Repositories
             return DeleteAsync(vroomOutput);
         }
 
-        public Task<ActionResult<IEnumerable<VroomOutput>>> GetAllVroomOutputsAsync()
+        public async Task<ActionResult<IEnumerable<VroomOutput>>> GetAllVroomOutputsAsync()
         {
-            return GetAllAsync();
+            return await RoutePlanningContext.VroomOutputs
+                .Include(vo => vo.Routes)
+                .ThenInclude(r => r.Steps)
+                .Include(vo => vo.Unassigned)
+                .Include(vo => vo.Summary).ToListAsync();
+                
         }
 
         public async Task<List<VroomOutput>> GetVroomOutputsByIds(IEnumerable<int> vroomOutputIds)
