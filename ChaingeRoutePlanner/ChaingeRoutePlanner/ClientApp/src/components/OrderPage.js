@@ -152,7 +152,7 @@ export class OrderPage extends Component {
                         <Form>
                             <h1>Order Shipment</h1>
                             <FormGroup row>
-                                <Label>Shipment type:</Label>
+                                <Label className="label_text">Shipment type:</Label>
                                 <Col>
                                     <Input onClick={event => this.handleCheckbox(true)} type="button" value="Pickup" className={this.state.checked ? "chainge-color" : ""} />
                                 </Col>
@@ -161,32 +161,36 @@ export class OrderPage extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup >
-                                <Label >Description</Label>
+                                <Label className="label_text">Description</Label>
                                 <Input onChange={event => this.state.description = event.target.value} type="textarea" name='Name' />
                             </FormGroup>
                             <FormGroup row>
-                                <Label >Weight</Label>
+                                <Label className="label_text">Weight</Label>
                                     <Col xs={11}>
                                         <Input onChange={event => this.state.amount = event.target.value} type="number" name='amount' />
                                     </Col>
                                     <Col>
-                                        <label>Kg</label>
+                                    <label className="label_text">Kg</label>
                                     </Col>
                             </FormGroup>
-                            <FormGroup>
+                            <FormGroup row>
                                 <h4>Time Window</h4>
-                                <Label >Between :</Label>
+                                <Col xs={6}>
+                                <Label className="label_text">Between :</Label>
                                 <Input onChange={event => this.state.window_start = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_start' />
-                                <Label >And</Label>
+                                </Col>
+                                <Col xs={6}>
+                                    <Label className="label_text">And</Label>
                                 <Input onChange={event => this.state.window_end = OrderPage.convertDateTimeToInt64(event.target.value)} type="datetime-local" name='time_end' />
+                                </Col>
                             </FormGroup>
                             <FormGroup>
-                                <Label >Location</Label>
+                                <Label className="label_text">Location</Label>
                                 <Input value={this.state.lat} className="form-control" id="lat" disabled={true}/>
                                 <Input value={this.state.lng} className="form-control" id="lng" disabled={true}/>
                             </FormGroup>
                             
-                            <MapContainer center={[55.66064229583371, 12.59125202894211]} zoom={10} scrollWheelZoom={true} style={{ height: "75vh" }} eventHandlers={{
+                            <MapContainer center={[55.66064229583371, 12.59125202894211]} zoom={10} scrollWheelZoom={true} style={{ height: "40vh" }} eventHandlers={{
                                 click: () => {
                                     console.log('map clicked')
                                 },
@@ -203,7 +207,7 @@ export class OrderPage extends Component {
                                 </Marker>
                             </MapContainer>
                             <br/>
-                            <Button onClick={this.handleSendData} className="btn chainge-color">Add Order</Button>
+                            <Button onClick={this.handleSendData} className="btn chainge-color button-chainge">Add Order</Button>
                         </Form>
                     </Row>
                     <Row>

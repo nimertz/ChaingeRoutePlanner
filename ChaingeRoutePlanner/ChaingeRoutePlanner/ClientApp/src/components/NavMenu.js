@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { NavLink as RRNavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import logo from "../assets/ChaingeLogo.png"
@@ -27,21 +28,21 @@ export class NavMenu extends Component {
       <header>
             <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
-                    <NavbarBrand tag={Link} to="/"><img src={logo} style={{ width: 100, marginTop: -7 }} /></NavbarBrand>
+                    <NavbarBrand tag={Link} to="/home"><img src={logo} style={{ width: 100, marginTop: -7 }} /></NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                                <NavLink tag={Link} className="chainge-text" to="/listPage">List</NavLink>
+                  <NavLink tag={Link} className="chainge-text" activeClassName="nav-selected" tag={RRNavLink} to="/listPage">Plan routes</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="chainge-text" to="/orderPage">Order Page</NavLink>
+                  <NavLink tag={Link} className="chainge-text" activeClassName="nav-selected" tag={RRNavLink} to="/orderPage">Add Order</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="chainge-text" to="/bikePage">Bike Page</NavLink>
+                  <NavLink tag={Link} className="chainge-text" activeClassName="nav-selected" tag={RRNavLink} to="/bikePage">Add Bike</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="chainge-text" to="/oldroute">Old Route</NavLink>
+                  <NavLink tag={Link} className="chainge-text" activeClassName="nav-selected" tag={RRNavLink} to="/oldroute">Old Routes</NavLink>
                 </NavItem>
               </ul>
             </Collapse>

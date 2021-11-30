@@ -82,36 +82,42 @@ export class BikePage extends Component {
                       
                     <FormGroup>
                         <Col>
-                            <Label>Description</Label>
+                            <Label className="label_text" >Description</Label>
                         </Col>
                         <Col>
                                 <Input onChange={event => this.state.bikeDescription = event.target.value} type="text" className="form-control" id="bikeDescriptionID" aria-describedby="emailHelp" placeholder="Description" />
                         </Col>
                     </FormGroup>
-                        <FormGroup>
-                            <Label className="">Capacity</Label>
-                        <div>
-                    <Input onChange={event => this.state.bikeCapacity = event.target.value} type="number" name='Capacity' id="" placeholder="Bike capacity (kg)" />
-                        </div>
+                        <FormGroup row>
+                            <Label className="label_text">Capacity</Label>
+                            <Col xs={11}>
+                    <Input onChange={event => this.state.bikeCapacity = event.target.value} type="number" name='Capacity' id="" placeholder="Bike capacity" />
+                                </Col>
+                                <Col>
+                                        <label className="label_text">Kg</label>
+                                </Col>
                     </FormGroup>
                     <FormGroup>
-                        <Label>Active Timeroom</Label>
-                        <Label>Date</Label>
+                        <Label className="label_text">Active Date</Label>
                           <Input type="date" name='date_of_delivery'  onChange={event => this.state.data = event.target.value}/>
                     </FormGroup>
-                        <FormGroup>
-                        <Label>Active Timeroom</Label>
-                        <Label>Time - Start</Label>
-                        <Input type="time" name='delivery_clock_start'  onChange={event => this.state.timeStart = event.target.value}/>
-                        <Label>Time - end</Label>
-                        <Input type="time" name='delivery_clock_end'  onChange={event => this.state.timeEnd = event.target.value}/>
+                    <FormGroup row>
+                                <Label className="label_text">Active Timeroom</Label>
+                                <Col>
+                        <Label className="label_text">Time - Start</Label>
+                                    <Input type="time" name='delivery_clock_start' onChange={event => this.state.timeStart = event.target.value} />
+                                </Col>
+                                <Col>
+                        <Label className="label_text">Time - end</Label>
+                                    <Input type="time" name='delivery_clock_end' onChange={event => this.state.timeEnd = event.target.value} />
+                                    </Col>
                     </FormGroup>
                     <FormGroup>
-                        <Label >Max Tasks</Label>
+                        <Label className="label_text">Max Tasks</Label>
                         <Input onChange={event => this.state.maxTasks = event.target.value} type="number" name='date_of_birth'  />
                     </FormGroup>
                     <br/>
-                    <Button onClick={this.handleSendData} className="btn chainge-color">Add Bike</Button>
+                    <Button onClick={this.handleSendData} className="btn chainge-color button-chainge">Add Bike</Button>
                         </Form>
                     </Col>
               

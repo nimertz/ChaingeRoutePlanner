@@ -8,6 +8,7 @@ import { BikePage } from './components/BikePage';
 import { Counter } from './components/Counter';
 import { ListPage } from './components/ListPage';
 import { OldRoutesPage } from './components/OldRoutesPage';
+import { Login } from './components/Login';
 
 import './custom.css'
 
@@ -19,13 +20,14 @@ export default class App extends Component {
   render () {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
+        <Route path='/home' component={Home} />
         <Route path='/counter' componeot={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/orderPage' component={OrderPage} />
         <Route path='/bikePage' component={BikePage} />
         <Route path='/listPage' component={ListPage} />
-        <Route path='/oldroute' component={OldRoutesPage} />
+            <Route path='/oldroute' component={OldRoutesPage} />
+            <Route exact path='/' component={Login} />
       </Layout>
     );
   }

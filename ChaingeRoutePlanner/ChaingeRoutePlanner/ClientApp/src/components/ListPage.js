@@ -43,6 +43,7 @@ export class ListPage extends Component {
             selectedVehicles: [],
             
             routes: [],
+            date: null
         };
     }
 
@@ -152,7 +153,7 @@ export class ListPage extends Component {
             <ul className="list-group">
                 <h5>Vehicles</h5>
                 {vehicles.map(vehicle =>
-                    <li className="list-group-item" key={vehicle.id}>
+                    <li className="list-group-item label_text" key={vehicle.id}>
                         <Input onChange={() => this.handleCheckVehicle(vehicle.id)} className="form-check-input me-1 changie_checkBox" type="checkbox" value="Vehicle" aria-label="..."/>
                         {vehicle.id}: {vehicle.description} - {vehicle.capacity} kg
                     </li>
@@ -166,8 +167,8 @@ export class ListPage extends Component {
             <ul className="list-group">
                 <h5>Shipments</h5>
                 {shipments.map(shipment =>
-                    <li className="list-group-item" key={shipment.id}>
-                        <Input onChange={() => this.handleCheckShipment(shipment.id)} className="form-check-input me-1 changie_checkBox" type="checkbox" value="Shipment" aria-label="..." />
+                    <li className="list-group-item label_text" key={shipment.id}>
+                        <Input onChange={() => this.handleCheckShipment(shipment.id)} className="form-check-input me-1 changie_checkBox " type="checkbox" value="Shipment" aria-label="..." />
                         {shipment.id}: {shipment.description}
                         <br/>
                         {shipment.amount} kg
@@ -182,12 +183,21 @@ export class ListPage extends Component {
 
         return (
             <div>
-            <Row>
-                <Col>
-                    {vehicleContent}
-                </Col>
-                <Col>
-                    {shipmentContent}
+                <Row>
+                    <Col>
+                        <Row>
+                            <Input type="date" name='date_of_delivery' onChange={event => this.setState({ date: event.target.value })} />
+                        </Row>
+                        { this.state.date != null &&
+                                <Row>
+                                    <Col>
+                                        {vehicleContent}
+                                    </Col>
+                                    <Col>
+                                        {shipmentContent}
+                                    </Col>
+                                </Row>
+                            }
                 </Col>
                 <Col xs={6}>
                         <Map center={this.state.center} routes={this.state.routes} height={"65vh"}/>
@@ -223,7 +233,7 @@ export class ListPage extends Component {
                 </Row>
                 <br/>
             <Row>
-                <Button onClick={() => this.postRoutePlan()} className="chainge-color" disabled={this.isButtonDisabled()}
+                    <Button onClick={() => this.postRoutePlan()} className="chainge-color" disabled={this.isButtonDisabled()} style={{fontWeight: 'bold'}}
                         >
                         Create route plan
                 </Button>
