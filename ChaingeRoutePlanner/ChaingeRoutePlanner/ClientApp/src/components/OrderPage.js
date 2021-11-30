@@ -1,6 +1,7 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from 'react-leaflet'
 import {Button, Col, Container, Input, Label, Row, Form, FormGroup} from 'reactstrap';
+import {SearchField} from "./Map";
 
 function LocationMarker(props) {
     const [position, setPosition] = useState(null)
@@ -195,6 +196,7 @@ export class OrderPage extends Component {
                         console.log('map clicked')
                         },
                     }}>
+                            {<SearchField />}
                             <TileLayer
                                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

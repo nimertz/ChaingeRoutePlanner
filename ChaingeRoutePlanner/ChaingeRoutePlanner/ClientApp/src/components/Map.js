@@ -1,6 +1,7 @@
-import React, { Component, useState } from 'react';
-import {MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline as PL, Tooltip} from 'react-leaflet'
+import React, {Component, useEffect, useState} from 'react';
+import {MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap, Polyline as PL, Tooltip} from 'react-leaflet'
 import Polyline from '@mapbox/polyline'
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 function LocationMarker(props) {
     const [position, setPosition] = useState(null)
@@ -26,9 +27,30 @@ function LocationMarker(props) {
     )
 }
 
+export const SearchField = () => {
+    const provider = new OpenStreetMapProvider({
+        params: {
+            countrycodes: 'dk',
+            limit: 5,
+        },
+    });
+    
+    const searchControl = new GeoSearchControl({
+        notFoundMessage: 'Sorry, that address could not be found.',
+        provider: provider,
+    });
+
+    const map = useMap();
+    useEffect(() => {
+        map.addControl(searchControl);
+        return () => map.removeControl(searchControl);
+    }, []);
+
+    return null;
+};
+
 export class Map extends Component {
     static displayName = Map.name;
-
 
     static decodeGeometry(geometry) {
         return Polyline.decode(geometry);
@@ -59,6 +81,7 @@ export class Map extends Component {
                 console.log('map clicked')
             },
         }}>
+              {<SearchField />}
             <TileLayer
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

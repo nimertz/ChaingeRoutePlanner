@@ -41,6 +41,7 @@ namespace ChaingeRoutePlanner
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+            services.AddCors();
             
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
@@ -73,6 +74,7 @@ namespace ChaingeRoutePlanner
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
 
             app.UseEndpoints(endpoints =>
             {
