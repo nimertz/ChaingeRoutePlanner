@@ -1,7 +1,7 @@
 # ChaingeRoutePlanner
 A web-based route planning solution using the https://openrouteservice.org/ optimization API. 
 
-This project was made by the following people in the Cross Disciplinary Team Work course at ITU in the Autumn 2021.
+This project was made by the following people in the Cross Disciplinary Team Work course at the IT University of Copenhagen in the Autumn 2021.
 
 * Nikolaj Mertz (CS)
 * Peter Langgaard Pedersen (DDIT)
