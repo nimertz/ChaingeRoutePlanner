@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Container, Input, Label, Button, Form, FormGroup } from 'reactstrap';
 import bikeImg from "../assets/Bike.PNG"
+import {Redirect} from "react-router-dom";
 
 export class BikePage extends Component {
     static displayName = BikePage.name;
@@ -33,8 +34,8 @@ export class BikePage extends Component {
                 "Time": [this.state.timeStart, this.state.timeEnd],
                 "MaxTasks": this.state.maxTasks
             };
-
-            this.populateWeatherData();
+            this.postBike(this.state.bikeDescription, this.state.bikeCapacity)
+            alert("Bike added")
 
             //event.preventDefault();
     }

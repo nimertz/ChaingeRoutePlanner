@@ -66,7 +66,7 @@ export class OrderPage extends Component {
             "TimeSpan": this.state.timeSpan
         };
 
-        alert('Data send');
+        alert('Shipment ordered');
         console.log('Json values', jsonToSend);
         console.log(this.postPackage(this.state.checked, this.state.amount, this.state.lng, this.state.lat, this.state.description, this.state.window_start, this.state.window_end));
 

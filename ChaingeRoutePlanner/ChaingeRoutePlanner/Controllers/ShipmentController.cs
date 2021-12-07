@@ -165,7 +165,7 @@ namespace ChaingeRoutePlanner.Controllers
                 {
                     Id = shipment.Id,
                     Amount = shipment.Amount[0],
-                    Description = shipment.Pickup.Description + " -> " + shipment.Delivery.Description
+                    Description = "Pickup: " + shipment.Pickup.Description + "\n -" + "Delivery: " + shipment.Delivery.Description
                 });
             }
     

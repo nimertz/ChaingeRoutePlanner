@@ -143,10 +143,6 @@ export class ListPage extends Component {
         return `${hours}h ${minutes}m ${seconds}s`;
     }
     
-    static generateRandomPolygonColor() {
-        let colors = ["red" , "blue", "green", "purple","brown"];
-        return colors[Math.floor(Math.random() * colors.length)];
-    }
 
      renderVehicleList(vehicles) {
         return (

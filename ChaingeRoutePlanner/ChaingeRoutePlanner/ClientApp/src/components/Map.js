@@ -35,8 +35,8 @@ export class Map extends Component {
     }
 
     static generateRandomPolygonColor() {
-        let colors = ["red", "blue", "green", "purple", "brown"];
-        return "green";
+        let colors = ["red" , "blue", "green", "purple","brown"];
+        return colors[Math.floor(Math.random() * colors.length)];
     }
 
     static convertDuration(duration) {
@@ -51,6 +51,8 @@ export class Map extends Component {
         //convert feet to kilometers
         return (distance * 0.0003048).toFixed(2);
     }
+    
+    
 
   render () {
       return (
